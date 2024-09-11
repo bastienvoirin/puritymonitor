@@ -1,0 +1,29 @@
+[project]
+name = "puritymonitor"
+description = "Monte Carlo simulation and experimental data integration for noble liquid purity monitors based on radioactive electron sources."
+license = {file = "LICENSE"}
+readme = "README.md"
+version = "0.1.0"
+authors = [
+  {name = "Bastien Voirin"}
+]
+maintainers = [
+  {name = "Bastien Voirin"}
+]
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib"
+]
+classifiers = [
+  "Programming Language :: Python",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Physics"
+]
+
+[project.urls]
+#Homepage = ""
+#Documentation = ""
+Repository = "https://github.com/bastienvoirin/puritymonitor.git"
+Issues = "https://github.com/bastienvoirin/puritymonitor/issues"
+Changelog = "https://github.com/bastienvoirin/puritymonitor/blob/main/CHANGELOG.md"
