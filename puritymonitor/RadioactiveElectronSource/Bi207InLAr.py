@@ -4,7 +4,8 @@ from . import RadioactiveElectronSource
 
 class Bi207InLAr(RadioactiveElectronSource):
     """
-    Bi-207 (electron capture) radioactive electron source in liquid argon (LAr).
+    Bi-207 radioactive electron source (internal conversion electrons induced by electron capture)
+    in liquid argon (LAr).
     """
     def __init__(
         self,
@@ -12,7 +13,8 @@ class Bi207InLAr(RadioactiveElectronSource):
         gammaEnergy: list = [],
         electronProba: list = [],
         gammaProba: list = [],
-        activity: float = float("NaN")
+        activity: float = float("NaN"),
+        description: str = "Bi-207 radioactive electron source in LAr"
     ) -> None:
         super().__init__(
             electronEnergy = electronEnergy,
@@ -20,14 +22,5 @@ class Bi207InLAr(RadioactiveElectronSource):
             electronProba = electronProba,
             gammaProba = gammaProba,
             activity = activity,
-            description = "Bi-207 in LAr"
+            description = description
         )
-        
-    def decay(
-        self
-    ):
-        """
-        Generator of decay products starting from an initial Bi-207 atom up to a ground state Pb-207
-        nucleus.
-        """
-        yield

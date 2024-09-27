@@ -1,3 +1,7 @@
+from typing import Self # For type hint only (Python >= 3.11)
+
+################################################################################
+
 class EnergySpectra:
     def __init__(
         self,
@@ -12,11 +16,12 @@ class EnergySpectra:
     def save(
         self,
         filename: str
-    ) -> EnergySpectra:
+    ) -> Self:
         if len(self.spectra) != len(self.labels):
-            raise ValueError(
-                "You must provide an equal number of energy spectra and energy spectra labels."
-            )
+            raise ValueError(" ".join([
+                "You must provide an equal number of",
+                "energy spectra and energy spectra labels."
+            ]))
         
         with open(filename, "w") as outputFile:
             # Header
@@ -31,15 +36,21 @@ class EnergySpectra:
     def load(
         self,
         filename: str
-    ) -> EnergySpectra:
+    ) -> Self:
         with open(filename, "r") as inputFile:
             # Header
             self.labels = next(inputFile).split(",")
+
+            self.energy = []
+            self.spectra = [[] for _ in self.labels[1:]]
             
             # Body (energies and events per energy bin for each spectrum)
             for line in inputFile:
+                # Read the current bin
                 currentEnergy, *currentSpectra = line.split(",").map(float)
-                
-        self.energy = energy
-        self.spectra = spectra
+
+                # Update self.energy and self.spectra accordingly
+                self.energy.append(currentEnergy)
+                for outSpectrum, inSpectrum in zip(currentSpectra, self.spectra):
+                    outSpectrum.append(inSpectrum)
         return self

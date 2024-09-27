@@ -20,11 +20,37 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self,
         ax
     ):
-        ax.plot_surface(*cylinder(radius = outerRadius, height = height), alpha = 0.125, color = "k", shade = False)
-        ax.plot_surface(*ring(innerRadius = 0, outerRadius = innerRadius, z = height), alpha = 0.5, color = "tab:blue", shade = False)
-        ax.plot_surface(*ring(innerRadius = innerRadius, outerRadius = outerRadius, z = height), alpha = 0.5, color = "tab:orange", shade = False)
-        ax.plot_surface(*ring(innerRadius = 0, outerRadius = outerRadius, z = 0), alpha = 0.25, color = "k", shade = False)
-        ax.plot([0], [0], [0], alpha = 1., markerfacecolor = "tab:green", markeredgecolor = "tab:green", marker = "o")
+        ax.plot_surface(
+            *cylinder(radius = self.outerRadius, height = self.driftLength),
+            alpha = 0.125,
+            color = "k",
+            shade = False
+        )
+        ax.plot_surface(
+            *ring(innerRadius = 0, outerRadius = self.innerRadius, z = self.driftLength),
+            alpha = 0.5,
+            color = "tab:blue",
+            shade = False
+        )
+        ax.plot_surface(
+            *ring(innerRadius = self.innerRadius, outerRadius = self.outerRadius, z = self.driftLength),
+            alpha = 0.5,
+            color = "tab:orange",
+            shade = False
+        )
+        ax.plot_surface(
+            *ring(innerRadius = 0, outerRadius = self.outerRadius, z = 0),
+            alpha = 0.25,
+            color = "k",
+            shade = False
+        )
+        ax.plot(
+            [0], [0], [0],
+            alpha = 1.,
+            markerfacecolor = "tab:green",
+            markeredgecolor = "tab:green",
+            marker = "o"
+        )
         
         # Equal axes (https://github.com/matplotlib/matplotlib/issues/17172#issuecomment-830139107)
         ax.set_box_aspect([

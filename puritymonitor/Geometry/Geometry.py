@@ -1,3 +1,7 @@
+import numpy as np
+
+####################################################################################################
+
 def cylinder(
     centerX: float = 0.0,
     centerY: float = 0.0,
@@ -22,8 +26,8 @@ def ring(
 ):
     r = np.linspace(innerRadius, outerRadius, 10)
     u = np.linspace(0, 2*np.pi, 100)
-    x = np.outer(r, np.cos(u))
-    y = np.outer(r, np.sin(u))
+    x = centerX + np.outer(r, np.cos(u))
+    y = centerY + np.outer(r, np.sin(u))
     return x, y, np.full(x.shape, planeZ)
 
 ####################################################################################################

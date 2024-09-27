@@ -17,7 +17,7 @@ from .Geometry import (
 from .PurityMonitor import (
     PurityMonitor,
     PurityMonitorInitDecay,
-    PurityMonitorInitDecayTimed, # not implemented
-    PurityMonitorFullDecay,      # not implemented
-    PurityMonitorFullDecayTimed, # not implemented
+    PurityMonitorInitDecayTimed, # Not implemented
+    PurityMonitorFullDecay,      # Not implemented
+    PurityMonitorFullDecayTimed, # Not implemented
 )
