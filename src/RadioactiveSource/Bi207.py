@@ -22,7 +22,7 @@ class Bi207(RadioactiveSource):
         electronProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
         gammaProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
         activity: float = float("NaN"),
-        description: str = "Bi-207 radioactive electron source in LAr"
+        description: str = "Bi-207 radioactive source"
     ) -> None:
         super().__init__(
             electronEnergy = electronEnergy,
