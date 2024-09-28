@@ -13,16 +13,18 @@ class RadioactiveSource:
         gammaEnergy: list = [],
         electronProba: list = [],
         gammaProba: list = [],
+        gammaComptonDistance: list = [],
         activity: float = float("NaN"),
         description: str = "Unspecified radioactive source"
     ) -> None:
         assert len(electronEnergy) == len(electronProba)
-        assert len(gammaEnergy) == len(gammaProba)
+        assert len(gammaEnergy) == len(gammaProba) == len(gammaComptonDistance)
 
         self.electronEnergy = electronEnergy
         self.gammaEnergy = gammaEnergy
         self.electronProba = electronProba
         self.gammaProba = gammaProba
+        self.gammaComptonDistance = gammaComptonDistance
         self.activity = activity
         self.description = description
 
@@ -34,6 +36,12 @@ class RadioactiveSource:
         self.isElectron = np.concatenate((
             np.ones(self.electronEnergy, dtype = bool),
             np.zeros(self.electronEnergy, dtype = bool)
+        ))
+
+        # Distance between the decay vertex and the electron emission vertex
+        self.electronEmissionDistance = np.concatenate((
+            np.zeros(self.electronEnergy, dtype = float),
+            np.array(self.gammaComptonDistance, dtype = float)
         ))
         
     def __str__(
@@ -50,6 +58,7 @@ class RadioactiveSource:
             f"  gammaEnergy = {self.gammaEnergy}",
             f"  electronProba = {self.electronProba}",
             f"  gammaProba = {self.gammaProba}",
+            f"  gammaComptonDistance = {self.gammaComptonDistance}",
             f"  activity = {self.activity}",
             f"  description = {self.description}",
             f")"
@@ -63,11 +72,11 @@ class RadioactiveSource:
         Generator of possible initial decay products of a parent radioactive isotope.
         """
         for _ in range(nEvents):
-            energy, isElectron = np.random.choice(
-                zip(self.energy, self.isElectron),
+            energy, isElectron, electronEmissionDistance = np.random.choice(
+                zip(self.energy, self.isElectron, self.electronEmissionDistance),
                 p = self.proba
             )
-            yield energy, isElectron
+            yield energy, isElectron, electronEmissionDistance
 
     def fullDecay(
         self,

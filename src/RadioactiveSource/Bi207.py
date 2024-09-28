@@ -21,6 +21,7 @@ class Bi207(RadioactiveSource):
         gammaEnergy: list = [328.12, 511.0, 569.702, 897.8, 1063.662, 1442.2, 1770.237],
         electronProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
         gammaProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
+        gammaComptonDistance: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
         activity: float = float("NaN"),
         description: str = "Bi-207 radioactive source"
     ) -> None:
@@ -29,6 +30,7 @@ class Bi207(RadioactiveSource):
             gammaEnergy = gammaEnergy,
             electronProba = electronProba,
             gammaProba = gammaProba,
+            gammaComptonDistance = gammaComptonDistance,
             activity = activity,
             description = description
         )
