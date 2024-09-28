@@ -15,7 +15,7 @@ pip install -e .
 
 ## Usage
 
-[Manual](/manual%20(under%20development).pdf).
+[Manual](/docs/manual%20(under%20development).pdf).
 
 ## License
 

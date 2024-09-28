@@ -1,9 +1,9 @@
 import numpy as np
 from collections.abc import Generator # For type hint only
 
-################################################################################
+####################################################################################################
 
-class RadioactiveElectronSource:
+class RadioactiveSource:
     """
     Abstract base class to inherit from and implement.
     """
@@ -14,7 +14,7 @@ class RadioactiveElectronSource:
         electronProba: list = [],
         gammaProba: list = [],
         activity: float = float("NaN"),
-        description: str = "Unspecified radioactive electron source"
+        description: str = "Unspecified radioactive source"
     ) -> None:
         assert len(electronEnergy) == len(electronProba)
         assert len(gammaEnergy) == len(gammaProba)
@@ -45,7 +45,7 @@ class RadioactiveElectronSource:
         self
     ) -> str:
         return "\n".join([
-            f"RadioactiveElectronSource(",
+            f"RadioactiveSource(",
             f"  electronEnergy = {self.electronEnergy}",
             f"  gammaEnergy = {self.gammaEnergy}",
             f"  electronProba = {self.electronProba}",
@@ -55,12 +55,12 @@ class RadioactiveElectronSource:
             f")"
         ])
     
-    def decay(
+    def initDecay(
         self,
         nEvents = 1000000
     ) -> Generator[tuple, None, None]:
         """
-        Generator of decay products of Bi-207.
+        Generator of possible initial decay products of a parent radioactive isotope.
         """
         for _ in range(nEvents):
             energy, isElectron = np.random.choice(
@@ -74,7 +74,7 @@ class RadioactiveElectronSource:
         events = 1000000
     ) -> Generator[tuple, None, None]:
         """
-        Generator of decay products starting from an initial Bi-207 atom up to a
-        ground state Pb-207 nucleus.
+        Generator of decay products starting from a parent radioactive isotope to a ground-state
+        child isotope.
         """
         raise NotImplementedError

@@ -1,17 +1,17 @@
 from .PurityMonitor import PurityMonitor
-from .. import RadioactiveElectronSource
+from .. import RadioactiveSource
 from .. import Geometry
 
 ####################################################################################################
 
-class PurityMonitorFullDecay(PurityMonitor):
+class PurityMonitorInitDecayTimed(PurityMonitor):
     def __init__(
         self,
-        radioactiveElectronSource: RadioactiveElectronSource,
+        radioactiveSource: RadioactiveSource,
         geometry: Geometry
     ) -> None:
         raise NotImplementedError
         super.__init__(
-            radioactiveElectronSource = radioactiveElectronSource,
+            radioactiveSource = radioactiveSource,
             geometry = geometry
         )

@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 class LAr:
     """
-    Set of physical parameters defining the drifting of free electrons in liquid argon.
+    Set of physical parameters defining the drift of free electrons in a liquid argon volume.
     """
     def __init__(self,
         temperature: float = float("NaN"),          # K
@@ -15,8 +15,8 @@ class LAr:
         driftVelocity: float = float("NaN"),        # cm/µs
         lifetime: float = float("NaN"),             # µs
         attenuationLength: float = float("NaN"),    # cm
-        equivDioxygen: float = float("NaN"),        # ppb
-        equivDioxygenConstant: float = float("NaN") #
+        #equivDioxygen: float = float("NaN"),        # ppb
+        #equivDioxygenConstant: float = float("NaN") #
     ):
         self.temperature = temperature
         self.mobility = mobility if mobility is not None else self.defaultMobility
@@ -24,8 +24,8 @@ class LAr:
         self.driftVelocity = driftVelocity
         self.lifetime = lifetime
         self.attenuationLength = attenuationLength
-        self.equivDioxygen = equivDioxygen
-        self.equivDioxygenConstant = equivDioxygenConstant
+        #self.equivDioxygen = equivDioxygen
+        #self.equivDioxygenConstant = equivDioxygenConstant
         
         # Compute all missing physical parameters from the all given ones and an ordered list of
         # mathematical functions defining their relationships
@@ -35,7 +35,7 @@ class LAr:
             self.computeElectricField
         ]
         
-        for computeVariable in functions:
+        for computeVariable in self.functions:
             computeVariable()
 
     def __str__(self):
@@ -46,8 +46,8 @@ class LAr:
             ("driftVelocity", "cm/µs"),
             ("lifetime", "µs"),
             ("attenuationLength", "cm"),
-            ("equivDioxygen", "ppb"),
-            ("equivDioxygenConstant", "")
+            #("equivDioxygen", "ppb"),
+            #("equivDioxygenConstant", "")
         )
         return "\n".join([
             "LAr volume (",
@@ -98,8 +98,8 @@ class LAr:
             self.lifetime = self.attenuationLength / self.driftVelocity
         return self.lifetime
         
-    def computeEquivDioxygen(self):
-        return self.equivDioxygen
+    #def computeEquivDioxygen(self):
+    #    return self.equivDioxygen
         
-    def computeEquivDioxygenConstant(self):
-        return self.equivDioxygenConstant
+    #def computeEquivDioxygenConstant(self):
+    #    return self.equivDioxygenConstant

@@ -4,9 +4,9 @@ from .Medium import (
     LAr
 )
 
-from .RadioactiveElectronSource import (
-    RadioactiveElectronSource,
-    Bi207InLAr
+from .RadioactiveSource import (
+    RadioactiveSource,
+    Bi207
 )
 
 from .Geometry import (

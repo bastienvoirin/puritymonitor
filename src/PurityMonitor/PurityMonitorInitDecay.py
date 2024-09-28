@@ -1,22 +1,25 @@
-from .. import RadioactiveElectronSource
+from .PurityMonitor import PurityMonitor
+from .. import RadioactiveSource
 from .. import Geometry
 
 ####################################################################################################
 
-class PurityMonitor:
+class PurityMonitorInitDecay(PurityMonitor):
     def __init__(
         self,
-        radioactiveElectronSource: RadioactiveElectronSource,
+        radioactiveSource: RadioactiveSource,
         geometry: Geometry
     ) -> None:
-        self.radioactiveElectronSource = radioactiveElectronSource
-        self.geometry = geometry
+        super.__init__(
+            radioactiveSource = radioactiveSource,
+            geometry = geometry
+        )
         
     def __str__(
         self
     ) -> str:
         return " ".join([
-            "{self.radioactiveElectronSource} LAr purity monitor\n"
+            "{self.radioactiveSource} LAr purity monitor (initial decay only)\n"
         ])
         
     def draw(
