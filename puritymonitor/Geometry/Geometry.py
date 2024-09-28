@@ -43,13 +43,40 @@ class Geometry:
         return self.description
         
     def __repr__(self):
-        return self.description
+        return self.description + "()"
         
-    def visualize(
+    def draw(
         self,
         ax
     ):
         """
+        Draw the geometry.
+        
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError
+    
+    def isInsideActiveVolume(
+        self,
+        x: float,
+        y: float,
+        z: float
+    ):
+        """
+        Indicate whether a given 3D point (x, y, z) lies inside the active volume.
+        
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError
+    
+    def emissionVertexAndDirection(
+        self
+    ) -> tuple[tuple[float, float, float], tuple[float, float]]:
+        """
+        Sample a random IC electron or gamma emission vertex at the surface of the radioactive
+        source, and a random direction in the upper half-space (i.e. from the cathode plane to the
+        anode plane).
+
         This method must be implemented in derived classes.
         """
         raise NotImplementedError

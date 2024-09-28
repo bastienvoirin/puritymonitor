@@ -1,4 +1,5 @@
 from .Geometry import Geometry, cylinder, ring
+import numpy as np
 
 ####################################################################################################
 
@@ -13,13 +14,16 @@ class CylinderConcentricTwoPartAnode(Geometry):
         driftLength: float
     ):
         self.innerRadius = innerRadius
-        self.innerRadius = innerRadius
+        self.outerRadius = innerRadius
         self.driftLength = driftLength
         
-    def visualize(
+    def draw(
         self,
         ax
     ):
+        """
+        Draw the geometry.
+        """
         ax.plot_surface(
             *cylinder(radius = self.outerRadius, height = self.driftLength),
             alpha = 0.125,
@@ -58,10 +62,28 @@ class CylinderConcentricTwoPartAnode(Geometry):
             for lowerBound, upperBound in (getattr(ax, f"get_{axis}lim")() for axis in "xyz")
         ])
         
-    def isInside(
+    def isInsideActiveVolume(
         self,
         x: float,
         y: float,
         z: float
-    ):
+    ) -> bool:
+        """
+        Indicate whether a given 3D point (x, y, z) lies inside the active volume.
+        """
         return ((x**2 + y**2) <= self.outerRadius**2) and (0 <= z <= self.driftLength)
+    
+    def emissionVertexAndDirection(
+        self
+    ) -> tuple[tuple[float, float, float], tuple[float, float]]:
+        """
+        Sample a random IC electron or gamma emission vertex at the surface of the radioactive
+        source, and a random direction in the upper half-space (i.e. from the cathode plane to the
+        anode plane).
+        """
+        x = 0.0 # To do
+        y = 0.0 # To do
+        z = 0.0 # To do
+        theta = np.pi * np.random.random()
+        phi = 2 * np.pi * np.random.random()
+        return (x, y, z), (theta, phi)
