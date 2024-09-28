@@ -14,7 +14,7 @@ class CylinderConcentricTwoPartAnode(Geometry):
         driftLength: float
     ):
         self.innerRadius = innerRadius
-        self.outerRadius = innerRadius
+        self.outerRadius = outerRadius
         self.driftLength = driftLength
         
     def draw(
