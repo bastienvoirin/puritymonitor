@@ -39,13 +39,40 @@ class PurityMonitor:
         """
         """
 
-        for energy, isElec, elecEmissionDist in self.radioactiveSource.initDecay(nEvents = nEvents):
-            emissionVertex, emissionDirection = self.geometry.emissionVertexAndDirection()
+        self.geometry.resetAnodeSpectra(
+            nPoints = nPoints,
+            minEnergy = minEnergy,
+            maxEnergy = maxEnergy,
+            energyScale = energyScale
+        )
+
+        for energy, isElec, elecDist in self.radioactiveSource.decay(nEvents = nEvents):
+            (x0, y0, z0), (theta, phi) = self.geometry.decayVertexAndDirection()
 
             # Sample a random propagation distance `propDist` before Compton electron emission from
-            # an exponential probability density function of characteristic distance `propDist0`
-            propDist = -elecEmissionDist * np.log(np.random.random())
+            # an exponential probability density function of characteristic distance `elecDist`
+            propDist = -elecDist * np.log(np.random.random())
 
-            self.geometry.isInsideActiveVolume()
+            # Random electron emission vertex
+            # (which might be outside of the active volume for Compton electrons)
+            x1 = x0 + propDist * np.sin(theta) * np.sin(phi)
+            y1 = y0 + propDist * np.sin(theta) * np.cos(phi)
+            z1 = z0 + propDist * np.cos(theta)
+
+            # Discard events for which the electron emission vertex lies outside of the LAr volume
+            if not self.geometry.isInsideActiveVolume(x1, y1, z1):
+                continue
+
+            # To do: process electron if it is an electron
+            # To do: process gamma if it is a gamma photon
+
+            if energy >= 0:
+                energy *= np.exp(-(self.geometry.driftLength - z1) / attDistance)
+                
+                # Electron energy resolution/systematic error
+                energy += np.random.normal(loc = 0.0, scale = energyStdDev)
+
+                # To do: count event for the corresponding anode
+                self.geometry.updateAnodeSpectra(x1, y1, z1)
         
-        return energies, (innerAnodeSpectrum, outerAnodeSpectrum)
+        return self.geometry.getAnodeSpectra()

@@ -64,7 +64,7 @@ class RadioactiveSource:
             f")"
         ])
     
-    def initDecay(
+    def decay(
         self,
         nEvents = 1000000
     ) -> Generator[tuple, None, None]:
@@ -77,13 +77,3 @@ class RadioactiveSource:
                 p = self.proba
             )
             yield energy, isElectron, electronEmissionDistance
-
-    def fullDecay(
-        self,
-        events = 1000000
-    ) -> Generator[tuple, None, None]:
-        """
-        Generator of decay products starting from a parent radioactive isotope to a ground-state
-        child isotope.
-        """
-        raise NotImplementedError

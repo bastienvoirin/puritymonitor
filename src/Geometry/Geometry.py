@@ -69,7 +69,7 @@ class Geometry:
         """
         raise NotImplementedError
     
-    def emissionVertexAndDirection(
+    def decayVertexAndDirection(
         self
     ) -> tuple[tuple[float, float, float], tuple[float, float]]:
         """
@@ -77,6 +77,34 @@ class Geometry:
         source, and a random direction in the upper half-space (i.e. from the cathode plane to the
         anode plane).
 
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError
+    
+    def resetAnodeSpectra(
+        self,
+        nPoints: int = 100,
+        minEnergy: float = 0.0,
+        maxEnergy: float = 2.0,
+        energyScale: float = 1.0
+    ):
+        """
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError
+    
+    def updateAnodeSpectra(
+        self
+    ):
+        """
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError
+    
+    def getAnodeSpectra(
+        self
+    ):
+        """
         This method must be implemented in derived classes.
         """
         raise NotImplementedError

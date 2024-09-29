@@ -16,6 +16,8 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
+        self.innerAnodeSpectrum = []
+        self.outerAnodeSpectrum = []
         
     def draw(
         self,
@@ -73,7 +75,7 @@ class CylinderConcentricTwoPartAnode(Geometry):
         """
         return ((x**2 + y**2) <= self.outerRadius**2) and (0 <= z <= self.driftLength)
     
-    def emissionVertexAndDirection(
+    def decayVertexAndDirection(
         self
     ) -> tuple[tuple[float, float, float], tuple[float, float]]:
         """
@@ -87,3 +89,30 @@ class CylinderConcentricTwoPartAnode(Geometry):
         theta = np.pi * np.random.random()
         phi = 2 * np.pi * np.random.random()
         return (x, y, z), (theta, phi)
+    
+    def resetAnodeSpectra(
+        self,
+        nPoints: int = 100,
+        minEnergy: float = 0.0,
+        maxEnergy: float = 2.0,
+        energyScale: float = 1.0
+    ):
+        self.innerAnodeSpectrum = np.zeros(nPoints, dtype = int)
+        self.outerAnodeSpectrum = np.zeros(nPoints, dtype = int)
+    
+    def updateAnodeSpectra(
+        self,
+        x: float,
+        y: float,
+        z: float
+    ):
+        if 0 <= z <= self.driftLength:
+            if (x**2 + y**2) <= self.innerRadius**2:
+                self.innerAnodeSpectrum # To do: increment event count for the right energy bin
+            elif (x**2 + y**2) <= self.outerRadius**2:
+                self.outerAnodeSpectrum # To do: increment event count for the right energy bin
+    
+    def getAnodeSpectra(
+        self
+    ):
+        return self.innerAnodeSpectrum, self.outerAnodeSpectrum
