@@ -1,3 +1,4 @@
+from .. import EnergyBins
 from .Geometry import Geometry, cylinder, ring
 import numpy as np
 
@@ -13,9 +14,11 @@ class CylinderConcentricTwoPartAnode(Geometry):
         outerRadius: float,
         driftLength: float
     ):
+        self.description = "CylinderConcentricTwoPartAnode"
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
+        self.energyBins = []
         self.innerAnodeSpectrum = []
         self.outerAnodeSpectrum = []
         
@@ -99,6 +102,11 @@ class CylinderConcentricTwoPartAnode(Geometry):
     ):
         self.innerAnodeSpectrum = np.zeros(nBins, dtype = int)
         self.outerAnodeSpectrum = np.zeros(nBins, dtype = int)
+        self.energyBins = EnergyBins().fromRange(
+            minEnergy = minEnergy,
+            maxEnergy = maxEnergy,
+            nBins = nBins
+        )
     
     def updateAnodeSpectra(
         self,
@@ -125,10 +133,11 @@ class CylinderConcentricTwoPartAnode(Geometry):
         swapAnodes: bool = False
     ):
         ax.set_xlabel("Energy (MeV)")
+
         ax.set_ylabel("Inner anode", color = innerAnodeColor)
         self.innerAnodeSpectrum # To do: plot
         ax.tick_params(axis = "y", labelcolor = innerAnodeColor)
-        
+
         ax = ax.twinx() # Instantiate a second `Axes` object that shares the same x-axis
 
         ax.set_ylabel("Outer anode", color = outerAnodeColor)

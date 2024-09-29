@@ -36,13 +36,20 @@ class Geometry:
     """
     Abstract base class to inherit from and implement.
     """
-    def __init__(self):
+    def __init__(
+        self
+    ):
         self.description = "Geometry"
+        self.energyBins = None
         
-    def __str__(self):
+    def __str__(
+        self
+    ):
         return self.description
         
-    def __repr__(self):
+    def __repr__(
+        self
+    ):
         return self.description + "()"
         
     def draw(
@@ -87,7 +94,7 @@ class Geometry:
         minEnergy: float = 0.0,
         maxEnergy: float = 2.0,
         energyScale: float = 1.0
-    ):
+    ) -> None:
         """
         This method must be implemented in derived classes.
         """
@@ -95,15 +102,21 @@ class Geometry:
     
     def updateAnodeSpectra(
         self
-    ):
+    ) -> None:
         """
         This method must be implemented in derived classes.
         """
         raise NotImplementedError
     
+    @property
+    def anodeSpectra(
+        self
+    ) -> tuple:
+        return self.getAnodeSpectra()
+    
     def getAnodeSpectra(
         self
-    ):
+    ) -> tuple:
         """
         This method must be implemented in derived classes.
         """
@@ -111,7 +124,7 @@ class Geometry:
     
     def plotAnodeSpectra(
         self
-    ):
+    ) -> None:
         """
         This method must be implemented in derived classes.
         """

@@ -81,7 +81,7 @@ class PurityMonitor:
                 # Increment the event count for right anode
                 self.geometry.updateAnodeSpectra(x1, y1, z1)
         
-        return self.geometry.getAnodeSpectra()
+        return self.geometry.energyBins, self.geometry.anodeSpectra
     
     def plotAnodeSpectra(
         self,
