@@ -1,3 +1,5 @@
+from .EnergyBins import EnergyBins
+
 from .EnergySpectra import EnergySpectra
 
 from .Medium import (

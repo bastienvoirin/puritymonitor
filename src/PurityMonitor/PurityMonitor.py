@@ -1,5 +1,6 @@
 from .. import RadioactiveSource
 from .. import Geometry
+from .. import EnergyBins
 import numpy as np
 
 ####################################################################################################
@@ -38,7 +39,12 @@ class PurityMonitor:
     ):
         """
         """
-
+        energyBins = EnergyBins().fromRange(
+            nBins = nBins,
+            minEnergy = minEnergy,
+            maxEnergy = maxEnergy
+        )
+        
         self.geometry.resetAnodeSpectra(
             nBins = nBins,
             minEnergy = minEnergy,

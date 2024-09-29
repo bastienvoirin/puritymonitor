@@ -1,29 +1,5 @@
 from typing import Self # For type hint only (Python >= 3.11)
-import numpy as np
-
-####################################################################################################
-
-class EnergyBins:
-    def __init__(
-        self
-    ):
-        self.lower = None
-        self.upper = None
-        self.nBins: int = None
-        self.binWidth: float = None
-
-    def fromRange(
-        self,
-        minEnergy: float = 0.0,
-        maxEnergy: float = 2.0,
-        nBins: int = 100
-    ):
-        linSpace = np.linspace(start = minEnergy, stop = maxEnergy, num = nBins + 1)
-        self.lower = linSpace[:-1]
-        self.upper = linSpace[1:]
-        self.nBins = nBins
-        self.binWidth = (maxEnergy - minEnergy) / nBins
-        
+    
 ####################################################################################################
 
 class EnergySpectra:
@@ -42,10 +18,7 @@ class EnergySpectra:
         filename: str
     ) -> Self:
         if len(self.spectra) != len(self.labels):
-            raise ValueError(" ".join([
-                "You must provide an equal number of",
-                "energy spectra and energy spectra labels."
-            ]))
+            raise ValueError("You must provide an equal number of energy spectra and labels.")
         
         with open(filename, "w") as outputFile:
             # Header
@@ -64,17 +37,16 @@ class EnergySpectra:
         with open(filename, "r") as inputFile:
             # Header
             self.labels = next(inputFile).split(",")
-
-            self.energy = []
-            self.spectra = [[] for _ in self.labels[1:]]
             
             # Body (energies and events per energy bin for each spectrum)
+            self.energy = []
+            self.spectra = [[] for _ in self.labels[1:]]
             for line in inputFile:
                 # Read the current bin
                 currentEnergy, *currentSpectra = line.split(",").map(float)
 
                 # Update self.energy and self.spectra accordingly
                 self.energy.append(currentEnergy)
-                for outSpectrum, inSpectrum in zip(currentSpectra, self.spectra):
-                    outSpectrum.append(inSpectrum)
+                for savedSpectrum, readSpectrum in zip(self.spectra, currentSpectra):
+                    savedSpectrum.append(readSpectrum)
         return self
