@@ -30,7 +30,7 @@ class PurityMonitor:
     def energySpectra(
         self,
         nEvents: int = 1000000,     # Number of events to simulate
-        nBins: int = 100,         # Number of energy bins
+        nBins: int = 100,           # Number of energy bins
         minEnergy: float = 0.0,     # Lowest energy in arbitrary units
         maxEnergy: float = 2.0,     # Highest energy in arbitrary units
         energyScale: float = 1.0,   # Arbitrary units per MeV
@@ -44,7 +44,7 @@ class PurityMonitor:
             minEnergy = minEnergy,
             maxEnergy = maxEnergy
         )
-        
+
         self.geometry.resetAnodeSpectra(
             nBins = nBins,
             minEnergy = minEnergy,
@@ -82,3 +82,10 @@ class PurityMonitor:
                 self.geometry.updateAnodeSpectra(x1, y1, z1)
         
         return self.geometry.getAnodeSpectra()
+    
+    def plotAnodeSpectra(
+        self,
+        ax,
+        **kwargs
+    ):
+        return self.geometry.plotAnodeSpectra(ax = ax, **kwargs)

@@ -108,3 +108,11 @@ class Geometry:
         This method must be implemented in derived classes.
         """
         raise NotImplementedError
+    
+    def plotAnodeSpectra(
+        self
+    ):
+        """
+        This method must be implemented in derived classes.
+        """
+        raise NotImplementedError

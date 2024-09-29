@@ -15,6 +15,23 @@ class EnergyBins:
         self.nBins = nBins
         self.binWidth = binWidth
 
+    def __str__(
+        self
+    ):
+        return f"EnergyBins({self.lower} to {self.upper}, {self.nBins} bins)"
+    
+    def __repr__(
+        self
+    ):
+        return "\n".join([
+            "EnergyBins(",
+            f"  lower = {self.lower},",
+            f"  upper = {self.upper},",
+            f"  nBins = {self.nBins},",
+            f"  binWidth = {self.binWidth}",
+            ")"
+        ])
+    
     def fromRange(
         self,
         minEnergy: float = 0.0,

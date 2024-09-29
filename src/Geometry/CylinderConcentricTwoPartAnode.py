@@ -116,3 +116,21 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self
     ):
         return self.innerAnodeSpectrum, self.outerAnodeSpectrum
+    
+    def plotAnodeSpectra(
+        self,
+        ax,
+        innerAnodeColor: str = "tab:blue",
+        outerAnodeColor: str = "tab:orange",
+        swapAnodes: bool = False
+    ):
+        ax.set_xlabel("Energy (MeV)")
+        ax.set_ylabel("Inner anode", color = innerAnodeColor)
+        self.innerAnodeSpectrum # To do: plot
+        ax.tick_params(axis = "y", labelcolor = innerAnodeColor)
+        
+        ax = ax.twinx() # Instantiate a second `Axes` object that shares the same x-axis
+
+        ax.set_ylabel("Outer anode", color = outerAnodeColor)
+        self.outerAnodeSpectrum # To do: plot
+        ax.tick_params(axis = "y", labelcolor = outerAnodeColor)
