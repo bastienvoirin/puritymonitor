@@ -83,7 +83,7 @@ class Geometry:
     
     def resetAnodeSpectra(
         self,
-        nPoints: int = 100,
+        nBins: int = 100,
         minEnergy: float = 0.0,
         maxEnergy: float = 2.0,
         energyScale: float = 1.0

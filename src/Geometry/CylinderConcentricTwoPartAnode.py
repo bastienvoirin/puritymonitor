@@ -92,13 +92,13 @@ class CylinderConcentricTwoPartAnode(Geometry):
     
     def resetAnodeSpectra(
         self,
-        nPoints: int = 100,
+        nBins: int = 100,
         minEnergy: float = 0.0,
         maxEnergy: float = 2.0,
         energyScale: float = 1.0
     ):
-        self.innerAnodeSpectrum = np.zeros(nPoints, dtype = int)
-        self.outerAnodeSpectrum = np.zeros(nPoints, dtype = int)
+        self.innerAnodeSpectrum = np.zeros(nBins, dtype = int)
+        self.outerAnodeSpectrum = np.zeros(nBins, dtype = int)
     
     def updateAnodeSpectra(
         self,

@@ -29,18 +29,18 @@ class PurityMonitor:
     def energySpectra(
         self,
         nEvents: int = 1000000,     # Number of events to simulate
-        nPoints: int = 200,         # Number of energy bins
+        nBins: int = 100,         # Number of energy bins
         minEnergy: float = 0.0,     # Lowest energy in arbitrary units
         maxEnergy: float = 2.0,     # Highest energy in arbitrary units
         energyScale: float = 1.0,   # Arbitrary units per MeV
-        energyStdDev: float = 0.1,  # Electron energy standard deviation
+        energyStdDev: float = 0.0,  # Electron energy standard deviation/resolution/systematic error
         attDistance: float = 1000.0 # Electron attenuation distance in mm
     ):
         """
         """
 
         self.geometry.resetAnodeSpectra(
-            nPoints = nPoints,
+            nBins = nBins,
             minEnergy = minEnergy,
             maxEnergy = maxEnergy,
             energyScale = energyScale
@@ -72,7 +72,7 @@ class PurityMonitor:
                 # Electron energy resolution/systematic error
                 energy += np.random.normal(loc = 0.0, scale = energyStdDev)
 
-                # To do: count event for the corresponding anode
+                # Increment the event count for right anode
                 self.geometry.updateAnodeSpectra(x1, y1, z1)
         
         return self.geometry.getAnodeSpectra()
