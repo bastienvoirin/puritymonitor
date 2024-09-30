@@ -7,10 +7,38 @@
 
 ### Development/editable installation
 
+Setup (once)
+
 ```sh
+# Clone and enter the package repository
 git clone https://github.com/bastienvoirin/puritymonitor.git
 cd puritymonitor
+
+# Create a new virtual environment
+python3 -m venv .venv # Unix/macOS
+py -m venv .venv      # Windows
+```
+
+Activate (each time)
+
+```sh
+# Activate the new virtual environment
+source .venv/bin/activate # Unix/macOS
+.venv\Scripts\activate    # Windows
+```
+
+Install (once)
+
+```sh
+# Install the puritymonitor package from its source in editable mode
 pip install -e .
+```
+
+Deactivate (each time)
+
+```sh
+# Deactivate the virtual environment
+deactivate
 ```
 
 ## Usage
