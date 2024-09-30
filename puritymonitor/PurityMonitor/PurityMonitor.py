@@ -39,12 +39,6 @@ class PurityMonitor:
     ):
         """
         """
-        energyBins = EnergyBins().fromRange(
-            nBins = nBins,
-            minEnergy = minEnergy,
-            maxEnergy = maxEnergy
-        )
-
         self.geometry.resetAnodeSpectra(
             nBins = nBins,
             minEnergy = minEnergy,
@@ -79,7 +73,7 @@ class PurityMonitor:
                 energy += np.random.normal(loc = 0.0, scale = energyStdDev)
 
                 # Increment the event count for right anode
-                self.geometry.updateAnodeSpectra(x1, y1, z1)
+                self.geometry.updateAnodeSpectra(x1, y1, z1, energy / 1000)
         
         return self.geometry.energyBins, self.geometry.anodeSpectra
     

@@ -4,14 +4,14 @@ from .. import Geometry
 
 ####################################################################################################
 
-class PurityMonitorFullDecayTimed(PurityMonitor):
+class PurityMonitorFullDecay(PurityMonitor):
     def __init__(
         self,
         radioactiveSource: RadioactiveSource,
         geometry: Geometry
     ) -> None:
         raise NotImplementedError
-        super.__init__(
+        super().__init__(
             radioactiveSource = radioactiveSource,
             geometry = geometry
         )

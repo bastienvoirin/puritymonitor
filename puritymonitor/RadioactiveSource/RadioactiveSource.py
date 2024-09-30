@@ -31,16 +31,17 @@ class RadioactiveSource:
         # Concatenate electrons and gamma photons
         self.energy = np.array([*self.electronEnergy, *self.gammaEnergy])
         self.proba = np.array([*self.electronProba, *self.gammaProba])
+        self.proba /= np.sum(self.proba)
 
         # Boolean mask
         self.isElectron = np.concatenate((
-            np.ones(self.electronEnergy, dtype = bool),
-            np.zeros(self.electronEnergy, dtype = bool)
+            np.ones(len(self.electronEnergy), dtype = bool),
+            np.zeros(len(self.electronEnergy), dtype = bool)
         ))
 
         # Distance between the decay vertex and the electron emission vertex
         self.electronEmissionDistance = np.concatenate((
-            np.zeros(self.electronEnergy, dtype = float),
+            np.zeros(len(self.electronEnergy), dtype = float),
             np.array(self.gammaComptonDistance, dtype = float)
         ))
         
@@ -71,9 +72,6 @@ class RadioactiveSource:
         """
         Generator of possible initial decay products of a parent radioactive isotope.
         """
+        zipped = tuple(zip(self.energy, self.isElectron, self.electronEmissionDistance))
         for _ in range(nEvents):
-            energy, isElectron, electronEmissionDistance = np.random.choice(
-                zip(self.energy, self.isElectron, self.electronEmissionDistance),
-                p = self.proba
-            )
-            yield energy, isElectron, electronEmissionDistance
+            yield zipped[np.random.choice(len(zipped), p = self.proba)]

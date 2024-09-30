@@ -18,7 +18,7 @@ class EnergyBins:
     def __str__(
         self
     ):
-        return f"EnergyBins({self.lower} to {self.upper}, {self.nBins} bins)"
+        return f"EnergyBins({self.lower[0]} to {self.upper[-1]}, {self.nBins} bins)"
     
     def __repr__(
         self
@@ -43,3 +43,4 @@ class EnergyBins:
         self.upper = linSpace[1:]
         self.nBins = nBins
         self.binWidth = (maxEnergy - minEnergy) / nBins
+        return self

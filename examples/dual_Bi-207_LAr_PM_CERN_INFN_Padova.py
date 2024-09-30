@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # Purity monitor TPC geometry visualization #
     #############################################
 
-    fig, (axS, axL) = plt.subplots(2)
+    fig, (axS, axL) = plt.subplots(1, 2, subplot_kw = {"projection": "3d"})
     shortPM.draw(axS)
     longPM.draw(axL)
 
@@ -34,8 +34,11 @@ if __name__ == "__main__":
         "attDistance": 1000.0
     }
 
-    fig, (axS, axL) = plt.subplots(2)
+    fig, (axS, axL) = plt.subplots(1, 2, figsize = (12, 4))
     shortPM.energySpectra(**simulation)
     longPM.energySpectra(**simulation)
     shortPM.plotAnodeSpectra(axS)
     longPM.plotAnodeSpectra(axL)
+    fig.tight_layout()
+
+    plt.show()

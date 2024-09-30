@@ -1,4 +1,4 @@
-from .. import EnergyBins
+from ..EnergySpectra import EnergyBins
 from .Geometry import Geometry, cylinder, ring
 import numpy as np
 
@@ -18,7 +18,7 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
-        self.energyBins = []
+        self.energyBins = EnergyBins()
         self.innerAnodeSpectrum = []
         self.outerAnodeSpectrum = []
         
@@ -36,19 +36,19 @@ class CylinderConcentricTwoPartAnode(Geometry):
             shade = False
         )
         ax.plot_surface(
-            *ring(innerRadius = 0, outerRadius = self.innerRadius, z = self.driftLength),
+            *ring(innerRadius = 0, outerRadius = self.innerRadius, planeZ = self.driftLength),
             alpha = 0.5,
             color = "tab:blue",
             shade = False
         )
         ax.plot_surface(
-            *ring(innerRadius = self.innerRadius, outerRadius = self.outerRadius, z = self.driftLength),
+            *ring(innerRadius = self.innerRadius, outerRadius = self.outerRadius, planeZ = self.driftLength),
             alpha = 0.5,
             color = "tab:orange",
             shade = False
         )
         ax.plot_surface(
-            *ring(innerRadius = 0, outerRadius = self.outerRadius, z = 0),
+            *ring(innerRadius = 0, outerRadius = self.outerRadius, planeZ = 0),
             alpha = 0.25,
             color = "k",
             shade = False
@@ -112,13 +112,15 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self,
         x: float,
         y: float,
-        z: float
+        z: float,
+        energy: float
     ):
+        mask = (energy > self.energyBins.lower) & (energy < self.energyBins.upper)
         if 0 <= z <= self.driftLength:
             if (x**2 + y**2) <= self.innerRadius**2:
-                self.innerAnodeSpectrum # To do: increment event count for the right energy bin
+                self.innerAnodeSpectrum[mask] += 1 # To do: increment event count for the right energy bin
             elif (x**2 + y**2) <= self.outerRadius**2:
-                self.outerAnodeSpectrum # To do: increment event count for the right energy bin
+                self.outerAnodeSpectrum[mask] += 1 # To do: increment event count for the right energy bin
     
     def getAnodeSpectra(
         self
@@ -135,11 +137,11 @@ class CylinderConcentricTwoPartAnode(Geometry):
         ax.set_xlabel("Energy (MeV)")
 
         ax.set_ylabel("Inner anode", color = innerAnodeColor)
-        self.innerAnodeSpectrum # To do: plot
+        ax.plot(self.energyBins.lower, self.innerAnodeSpectrum, color = innerAnodeColor) # To do: plot
         ax.tick_params(axis = "y", labelcolor = innerAnodeColor)
 
         ax = ax.twinx() # Instantiate a second `Axes` object that shares the same x-axis
 
         ax.set_ylabel("Outer anode", color = outerAnodeColor)
-        self.outerAnodeSpectrum # To do: plot
+        ax.plot(self.energyBins.lower, self.outerAnodeSpectrum, color = outerAnodeColor) # To do: plot
         ax.tick_params(axis = "y", labelcolor = outerAnodeColor)

@@ -3,10 +3,10 @@ import numpy as np
 ####################################################################################################
 
 def cylinder(
-    centerX: float = 0.0,
-    centerY: float = 0.0,
     radius: float = 10.0,
-    height: float = 100.0
+    height: float = 100.0,
+    centerX: float = 0.0,
+    centerY: float = 0.0
 ):
     z = np.linspace(0, height, 10)
     theta = np.linspace(0, 2*np.pi, 100)
@@ -18,11 +18,11 @@ def cylinder(
 ####################################################################################################
 
 def ring(
-    centerX: float = 0.0,
-    centerY: float = 0.0,
-    planeZ: float = 0.0,
     innerRadius: float = 10.0,
-    outerRadius: float = 20.0
+    outerRadius: float = 20.0,
+    planeZ: float = 0.0,
+    centerX: float = 0.0,
+    centerY: float = 0.0
 ):
     r = np.linspace(innerRadius, outerRadius, 10)
     u = np.linspace(0, 2*np.pi, 100)

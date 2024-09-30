@@ -22,7 +22,7 @@ py -m venv .venv      # Windows
 Activate (each time)
 
 ```sh
-# Activate the new virtual environment
+# Activate the virtual environment
 source .venv/bin/activate # Unix/macOS
 .venv\Scripts\activate    # Windows
 ```
@@ -30,7 +30,7 @@ source .venv/bin/activate # Unix/macOS
 Install (once)
 
 ```sh
-# Install the puritymonitor package from its source in editable mode
+# Install the `puritymonitor` package from its source in editable mode
 pip install -e .
 ```
 
