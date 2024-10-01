@@ -1,3 +1,7 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
 [project]
 name = "puritymonitor"
 description = "Monte Carlo simulation and experimental data integration for noble liquid purity monitors based on radioactive electron sources."
