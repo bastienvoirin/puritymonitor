@@ -3,9 +3,44 @@
 
 # Python package for noble liquid (e.g. liquid argon) purity monitors based on radioactive electron sources (e.g. Bi-207)
 
+## Usage
+
+[Manual](/docs/manual%20(under%20development).pdf).
+
 ## Installation
 
+### Through `pip` and PyPI
+
+```sh
+```
+
+### Through `conda`
+
+```sh
+```
+
 ### Development/editable installation
+
+#### Global installation (not recommended)
+
+Setup and install (once)
+
+```sh
+# Clone and enter the package repository
+git clone https://github.com/bastienvoirin/puritymonitor.git
+cd puritymonitor
+
+# Install the `puritymonitor` package from its source in editable mode
+pip install -e .
+```
+
+Use in Python programs
+
+```py
+import puritymonitor
+```
+
+#### Using a virtual environment (recommended)
 
 Setup (once)
 
@@ -34,16 +69,18 @@ Install (once)
 pip install -e .
 ```
 
+Use in Python programs
+
+```py
+import puritymonitor
+```
+
 Deactivate (each time)
 
 ```sh
 # Deactivate the virtual environment
 deactivate
 ```
-
-## Usage
-
-[Manual](/docs/manual%20(under%20development).pdf).
 
 ## License
 

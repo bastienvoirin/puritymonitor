@@ -1,4 +1,4 @@
-name: Publish ${package_name} Python package to the Python Package Index (PyPI)
+name: Publish Python package to the Python Package Index (PyPI)
 
 on:
   release:

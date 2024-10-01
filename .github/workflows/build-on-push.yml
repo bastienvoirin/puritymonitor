@@ -1,4 +1,4 @@
-name: Build ${package_name} Python package on push
+name: Build Python package on push
 
 on: [push]
 
