@@ -17,11 +17,11 @@ class Bi207(RadioactiveSource):
     """
     def __init__(
         self,
-        electronEnergy: list = [481.7, 555.75, 566.5, 809.8, 975.7, 1049.0, 1060.0, 1682.0],
-        gammaEnergy: list = [328.12, 511.0, 569.702, 897.8, 1063.662, 1442.2, 1770.237],
-        electronProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
-        gammaProba: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
-        gammaComptonDistance: list = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], # To do
+        electronEnergy: list[float] = [0.4817, 0.55575, 0.5665, 0.8098, 0.9757, 1.049, 1.060, 1.682],
+        gammaEnergy: list[float] = [0.32812, 0.5110, 0.569702, 0.8978, 1.063662, 1.4422, 1.770237],
+        electronProba: list[float] = [0.0152, 0.0044, 0.0015, 0.0, 0.0703, 0.0184, 0.0054, 0.0], # To do
+        gammaProba: list[float] = [0.0, 0.0, 0.980, 0.0, 0.750, 0.0, 0.069], # To do
+        gammaComptonDistance: list[float] = [0.0, 0.0, 80.0, 0.0, 120.0, 0.0, 160.0], # To do
         activity: float = float("NaN"),
         description: str = "Bi-207 radioactive source"
     ) -> None:

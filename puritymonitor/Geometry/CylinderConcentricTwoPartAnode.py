@@ -10,9 +10,9 @@ class CylinderConcentricTwoPartAnode(Geometry):
     """
     def __init__(
         self,
-        innerRadius: float,
-        outerRadius: float,
-        driftLength: float
+        innerRadius: float, # mm
+        outerRadius: float, # mm
+        driftLength: float  # mm
     ):
         self.description = "CylinderConcentricTwoPartAnode"
         self.innerRadius = innerRadius
@@ -86,12 +86,21 @@ class CylinderConcentricTwoPartAnode(Geometry):
         source, and a random direction in the upper half-space (i.e. from the cathode plane to the
         anode plane).
         """
-        x = 0.0 # To do
-        y = 0.0 # To do
-        z = 0.0 # To do
-        theta = np.pi * np.random.random()
-        phi = 2 * np.pi * np.random.random()
-        return (x, y, z), (theta, phi)
+
+        # Random point (x, y, z = 0) inside a disk of radius squared r² = 6.25
+        while True:
+            x = 5.0 * np.random.random() - 2.5
+            y = 5.0 * np.random.random() - 2.5
+            if x**2 + y**2 < 6.25:
+                break
+        z = 0.0
+
+        # Random direction in the upper half-space (i.e. from the cathode plane to the anode plane)
+        ctheta = np.random.random()
+        stheta = np.sqrt(1.0 - ctheta**2)
+        phi = 2.0 * np.pi * np.random.random()
+
+        return (x, y, z), (ctheta, stheta, phi)
     
     def resetAnodeSpectra(
         self,
@@ -110,10 +119,10 @@ class CylinderConcentricTwoPartAnode(Geometry):
     
     def updateAnodeSpectra(
         self,
-        x: float,
-        y: float,
-        z: float,
-        energy: float
+        x: float, # mm
+        y: float, # mm
+        z: float, # mm
+        energy: float # MeV
     ):
         mask = (energy > self.energyBins.lower) & (energy < self.energyBins.upper)
         if 0 <= z <= self.driftLength:
@@ -137,11 +146,15 @@ class CylinderConcentricTwoPartAnode(Geometry):
         ax.set_xlabel("Energy (MeV)")
 
         ax.set_ylabel("Inner anode", color = innerAnodeColor)
-        ax.plot(self.energyBins.lower, self.innerAnodeSpectrum, color = innerAnodeColor) # To do: plot
+        lns1 = ax.plot(self.energyBins.lower, self.innerAnodeSpectrum, color = innerAnodeColor, label = "Inner anode") # To do: plot
         ax.tick_params(axis = "y", labelcolor = innerAnodeColor)
-
+        
         ax = ax.twinx() # Instantiate a second `Axes` object that shares the same x-axis
 
         ax.set_ylabel("Outer anode", color = outerAnodeColor)
-        ax.plot(self.energyBins.lower, self.outerAnodeSpectrum, color = outerAnodeColor) # To do: plot
+        lns2 = ax.plot(self.energyBins.lower, self.outerAnodeSpectrum, color = outerAnodeColor, label = "Outer anode") # To do: plot
         ax.tick_params(axis = "y", labelcolor = outerAnodeColor)
+
+        lns = lns1 + lns2
+        labels = [l.get_label() for l in lns]
+        ax.legend(lns, labels)

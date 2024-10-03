@@ -38,6 +38,8 @@ class EnergyBins:
         maxEnergy: float = 2.0,
         nBins: int = 100
     ):
+        """
+        """
         linSpace = np.linspace(start = minEnergy, stop = maxEnergy, num = nBins + 1, dtype = float)
         self.lower = linSpace[:-1]
         self.upper = linSpace[1:]

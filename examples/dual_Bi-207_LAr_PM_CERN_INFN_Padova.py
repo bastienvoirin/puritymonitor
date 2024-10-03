@@ -1,36 +1,31 @@
-from puritymonitor import (Bi207, CylinderConcentricTwoPartAnode, PurityMonitorInitDecay)
 from matplotlib import pyplot as plt
+from puritymonitor import (
+    Bi207,
+    CylinderConcentricTwoPartAnode as Cylinder,
+    PurityMonitorInitDecay as PM
+)
 
 if __name__ == "__main__":
-    shortPM = PurityMonitorInitDecay(
-        Bi207(),
-        CylinderConcentricTwoPartAnode(innerRadius = 1.5, outerRadius = 3.0, driftLength = 6.5)
-    )
+    # Dual purity monitor definition:
 
-    longPM = PurityMonitorInitDecay(
-        Bi207(),
-        CylinderConcentricTwoPartAnode(innerRadius = 1.5, outerRadius = 3.0, driftLength = 18.5)
-    )
+    shortPM = PM(Bi207(), Cylinder(innerRadius = 15.0, outerRadius = 30.0, driftLength = 65.0))
+    longPM = PM(Bi207(), Cylinder(innerRadius = 15.0, outerRadius = 30.0, driftLength = 185.0))
 
-    #############################################
-    # Purity monitor TPC geometry visualization #
-    #############################################
+    # Dual purity monitor TPC geometry visualization:
 
     fig, (axS, axL) = plt.subplots(1, 2, subplot_kw = {"projection": "3d"})
     shortPM.draw(axS)
     longPM.draw(axL)
 
-    ##########################
-    # Monte Carlo simulation #
-    ##########################
+    # Monte Carlo simulation:
 
     simulation = {
         "nEvents": 1000000,
         "nBins": 100,
-        "minEnergy": 0.0,
-        "maxEnergy": 2.0,
+        "minEnergy": 0.2,
+        "maxEnergy": 1.7,
         "energyScale": 1.0,
-        "energyStdDev": 0.0,
+        "energyStdDev": 0.025,
         "attDistance": 1000.0
     }
 

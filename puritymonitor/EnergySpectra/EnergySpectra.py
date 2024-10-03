@@ -1,15 +1,16 @@
 from typing import Self # For type hint only (Python >= 3.11)
+from . import EnergyBins
     
 ####################################################################################################
 
 class EnergySpectra:
     def __init__(
         self,
-        energy = None,
-        spectra: list | None = None,
-        labels: list[str] | None = None
+        energyBins: EnergyBins = None,
+        spectra: list = None,
+        labels: list[str] = None
     ) -> None:
-        self.energy = energy
+        self.energyBins = energyBins
         self.spectra = spectra
         self.labels = labels
         
@@ -17,6 +18,8 @@ class EnergySpectra:
         self,
         filename: str
     ) -> Self:
+        """
+        """
         if len(self.spectra) != len(self.labels):
             raise ValueError("You must provide an equal number of energy spectra and labels.")
         
@@ -25,7 +28,7 @@ class EnergySpectra:
             outputFile.write(",".join(self.labels))
             
             # Body (energies and events per energy bin for each spectrum)
-            for values in zip(self.energies, *self.spectra):
+            for values in zip(self.energyBins.lower, *self.spectra):
                 outputFile.write("\n" + ",".join(map(str, values)))
         
         return self
@@ -34,6 +37,9 @@ class EnergySpectra:
         self,
         filename: str
     ) -> Self:
+        """
+        """
+        lowerEnergy = []
         with open(filename, "r") as inputFile:
             # Header
             self.labels = next(inputFile).split(",")
@@ -46,7 +52,8 @@ class EnergySpectra:
                 currentEnergy, *currentSpectra = line.split(",").map(float)
 
                 # Update self.energy and self.spectra accordingly
-                self.energy.append(currentEnergy)
+                lowerEnergy.append(currentEnergy)
                 for savedSpectrum, readSpectrum in zip(self.spectra, currentSpectra):
                     savedSpectrum.append(readSpectrum)
+        self.energyBins = EnergyBins() # To do
         return self
