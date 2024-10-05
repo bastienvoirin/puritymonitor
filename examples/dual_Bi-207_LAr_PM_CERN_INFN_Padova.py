@@ -1,4 +1,9 @@
 from matplotlib import pyplot as plt
+import matplotlib as mpl
+plt.rc("font", family = "serif", size = 13)
+mpl.rc("text", usetex = True)
+mpl.rc("legend", fontsize = 13)
+
 from puritymonitor import (
     Bi207,
     CylinderConcentricTwoPartAnode as Cylinder,
@@ -22,14 +27,14 @@ if __name__ == "__main__":
     simulation = {
         "nEvents": 1000000,
         "nBins": 100,
-        "minEnergy": 0.2,
-        "maxEnergy": 1.7,
+        "minEnergy": 0.0,
+        "maxEnergy": 2.0,
         "energyScale": 1.0,
-        "energyStdDev": 0.025,
+        "energyStdDev": 0.05,
         "attDistance": 1000.0
     }
 
-    fig, (axS, axL) = plt.subplots(1, 2, figsize = (12, 4))
+    fig, (axS, axL) = plt.subplots(1, 2, figsize = (10.5, 3.5))
     shortPM.energySpectra(**simulation)
     longPM.energySpectra(**simulation)
     shortPM.plotAnodeSpectra(axS)
