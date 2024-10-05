@@ -1,4 +1,4 @@
-from ..EnergySpectra import EnergyBins
+from ..EnergySpectra import EnergyBins, EnergySpectra
 from .Geometry import Geometry, cylinder, ring
 import numpy as np
 
@@ -105,9 +105,8 @@ class CylinderConcentricTwoPartAnode(Geometry):
     def resetAnodeSpectra(
         self,
         nBins: int = 100,
-        minEnergy: float = 0.0,
-        maxEnergy: float = 2.0,
-        energyScale: float = 1.0
+        minEnergy: float = 0.0, # MeV
+        maxEnergy: float = 2.0  # MeV
     ):
         self.innerAnodeSpectrum = np.zeros(nBins, dtype = int)
         self.outerAnodeSpectrum = np.zeros(nBins, dtype = int)
@@ -142,8 +141,11 @@ class CylinderConcentricTwoPartAnode(Geometry):
         innerAnodeColor: str = "tab:cyan",
         outerAnodeColor: str = "tab:orange",
         differenceColor: str = "tab:brown",
-        swapAnodes: bool = False
+        fittedPeakColor: str = "tab:green"
     ):
+        """
+        """
+
         energy = np.append(self.energyBins.lower, self.energyBins.upper[-1])
         inner = np.append(self.innerAnodeSpectrum, self.innerAnodeSpectrum[-1])
         outer = np.append(self.outerAnodeSpectrum, self.outerAnodeSpectrum[-1])
@@ -151,6 +153,22 @@ class CylinderConcentricTwoPartAnode(Geometry):
         ax.set_xlabel("Energy (MeV)")
         ax.set_xlim(self.energyBins.lower[0], self.energyBins.upper[-1])
         ax.axhline(0, color = "gray", linewidth = 0.5)
+        ax.text(
+            0.0,
+            1.01,
+            r"\textbf{Simulation}",
+            ha = "left",
+            va = "bottom",
+            transform = ax.transAxes
+        )
+        ax.text(
+            1.0,
+            1.01,
+            f"$\\ell_{{\\mathrm{{drift}}}} = {int(round(self.driftLength))}\\mathrm{{mm}}$",
+            ha = "right",
+            va = "bottom",
+            transform = ax.transAxes
+        )
 
         # Inner anode energy spectrum:
 
@@ -194,8 +212,18 @@ class CylinderConcentricTwoPartAnode(Geometry):
         )
         axInner.set_ylim(ylimInner)
 
+        # Gaussian fit of the ~1 MeV peak:
+
+        try:
+            (_, peakEnergy, _), energy, gaussian = EnergySpectra.fit(
+                self.energyBins,
+                self.innerAnodeSpectrum - self.outerAnodeSpectrum / scale
+            )
+            lns4 = axInner.plot(energy, gaussian, label = "Gaussian peak", color = fittedPeakColor)
+        except Exception as exception:
+            print(repr(exception))
+
         # Legend:
 
-        lns = lns1 + lns2 + lns3
-        labels = [l.get_label() for l in lns]
-        axOuter.legend(lns, labels, handlelength = 1)
+        lns = lns1 + lns2 + lns3 + lns4
+        axOuter.legend(lns, map(lambda l: l.get_label(), lns), handlelength = 1)

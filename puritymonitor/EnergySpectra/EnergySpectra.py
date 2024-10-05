@@ -1,6 +1,17 @@
 from typing import Self # For type hint only (Python >= 3.11)
 from . import EnergyBins
-    
+import numpy as np
+from scipy.optimize import curve_fit
+
+####################################################################################################
+
+def gaussian(x, *params):
+    """
+    Compute a Gaussian.
+    """
+    a, mu, sigma = params
+    return a * np.exp(-(x - mu)**2 / (2.0 * sigma**2))
+
 ####################################################################################################
 
 class EnergySpectra:
@@ -57,3 +68,40 @@ class EnergySpectra:
                     savedSpectrum.append(readSpectrum)
         self.energyBins = EnergyBins() # To do
         return self
+
+    @staticmethod
+    def fit(
+        energyBins: EnergyBins,
+        spectrum,
+        initialGuess: tuple[float, float, float] = (None, None, None)
+    ):
+        """
+        Usage:
+
+        ```
+        EnergySpectra.fit(energyBins, spectrum, initialGuess)
+        ```
+
+        or
+
+        ```
+        EnergySpectra().fit(energyBins, spectrum, initialGuess)
+        ```
+        """
+
+        a, mu, sigma = initialGuess
+        argmax = np.argmax(spectrum)
+        a = a if a is not None else spectrum[argmax]
+        mu = mu if mu is not None else (energyBins.lower[argmax] + energyBins.upper[argmax]) / 2
+        sigma = sigma if sigma is not None else 0.5
+        
+        params, _ = curve_fit(
+            f = gaussian,
+            xdata = (energyBins.lower + energyBins.upper) / 2,
+            ydata = spectrum,
+            p0 = (a, mu, sigma)
+        )
+        energies = np.linspace(energyBins.lower[0], energyBins.upper[-1], 1000)
+        fitted = gaussian(energies, *params)
+        
+        return params, energies, fitted
