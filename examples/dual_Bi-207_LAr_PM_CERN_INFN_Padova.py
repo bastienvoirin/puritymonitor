@@ -1,8 +1,8 @@
 from matplotlib import pyplot as plt
 import matplotlib as mpl
-plt.rc("font", family = "serif", size = 13)
+plt.rc("font", family = "serif", size = 11)
 mpl.rc("text", usetex = True)
-mpl.rc("legend", fontsize = 13)
+mpl.rc("legend", fontsize = 11)
 
 from puritymonitor import (
     Bi207,
@@ -34,11 +34,10 @@ if __name__ == "__main__":
         "attDistance": 1000.0
     }
 
-    fig, (axS, axL) = plt.subplots(1, 2, figsize = (10.5, 3.5))
+    fig, (axS, axL) = plt.subplots(1, 2, figsize = (9, 3), layout = "constrained")
     shortPM.energySpectra(**simulation)
     longPM.energySpectra(**simulation)
-    shortPM.plotAnodeSpectra(axS)
-    longPM.plotAnodeSpectra(axL)
-    fig.tight_layout()
+    shortPM.plotAnodeSpectra(axS, **simulation)
+    longPM.plotAnodeSpectra(axL, **simulation)
 
     plt.show()

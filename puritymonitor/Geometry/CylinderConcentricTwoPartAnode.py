@@ -141,7 +141,8 @@ class CylinderConcentricTwoPartAnode(Geometry):
         innerAnodeColor: str = "tab:cyan",
         outerAnodeColor: str = "tab:orange",
         differenceColor: str = "tab:brown",
-        fittedPeakColor: str = "tab:green"
+        fittedPeakColor: str = "tab:green",
+        **kwargs
     ):
         """
         """
@@ -153,10 +154,16 @@ class CylinderConcentricTwoPartAnode(Geometry):
         ax.set_xlabel("Energy (MeV)")
         ax.set_xlim(self.energyBins.lower[0], self.energyBins.upper[-1])
         ax.axhline(0, color = "gray", linewidth = 0.5)
+        def events(nEvents):
+            pow = 0
+            while nEvents % 1000 == 0:
+                pow += 3
+                nEvents //= 1000
+            return f"{nEvents}{({0: "", 3: "k", 6: "M"}[pow])}"
         ax.text(
             0.0,
             1.01,
-            r"\textbf{Simulation}",
+            r"\textbf{Simulation}" + f" ({events(kwargs["nEvents"])} events)",
             ha = "left",
             va = "bottom",
             transform = ax.transAxes

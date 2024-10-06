@@ -91,9 +91,8 @@ class Geometry:
     def resetAnodeSpectra(
         self,
         nBins: int = 100,
-        minEnergy: float = 0.0,
-        maxEnergy: float = 2.0,
-        energyScale: float = 1.0
+        minEnergy: float = 0.0, # MeV
+        maxEnergy: float = 2.0  # MeV
     ) -> None:
         """
         This method must be implemented in derived classes.

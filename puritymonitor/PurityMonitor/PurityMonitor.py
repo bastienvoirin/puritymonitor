@@ -42,8 +42,7 @@ class PurityMonitor:
         self.geometry.resetAnodeSpectra(
             nBins = nBins,
             minEnergy = minEnergy,
-            maxEnergy = maxEnergy,
-            energyScale = energyScale
+            maxEnergy = maxEnergy
         )
 
         for energy, isElec, elecDist in self.radioactiveSource.decay(nEvents = nEvents):
