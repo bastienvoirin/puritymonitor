@@ -6,7 +6,8 @@ class LAr(Medium):
     """
     Set of physical parameters defining how free electrons drift in a liquid argon volume.
     """
-    def __init__(self,
+    def __init__(
+        self,
         temperature: float = float("NaN"),      # K
         mobility = None,                        # (cm/µs) / (V/cm)
         electricField: float = float("NaN"),    # V/cm

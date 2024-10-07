@@ -32,7 +32,7 @@ class EnergySpectra:
         """
         """
         if len(self.spectra) != len(self.labels):
-            raise ValueError("You must provide an equal number of energy spectra and labels.")
+            raise ValueError("You must provide an equal number of energy spectra and energy spectra labels.")
         
         with open(filename, "w") as outputFile:
             # Header

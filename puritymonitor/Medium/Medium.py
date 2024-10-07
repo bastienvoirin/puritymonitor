@@ -7,7 +7,8 @@ class Medium:
     """
     Set of physical parameters defining free electrons drift in a medium.
     """
-    def __init__(self,
+    def __init__(
+        self,
         temperature: float = float("NaN"),                # K
         mobility: Callable[[float, float], float] = None, # (cm/µs) / (V/cm)
         electricField: float = float("NaN"),              # V/cm
@@ -56,7 +57,7 @@ class Medium:
         return "\n".join([
             "LAr(",
             *[
-                f"  {prop} = {getattr(self, prop)}, #{unit}"
+                f"  {prop} = {getattr(self, prop)}, # {unit}"
                 for prop, unit in zip(props)
             ],
             ")"
@@ -89,10 +90,7 @@ class Medium:
         
     def computeMobility(self):
         if self.mobility is None:
-            self.mobility = (
-                lambda temperature, electricField:
-                self.driftVelocity / self.electricField
-            )
+            self.mobility = lambda temperature, electricField: self.driftVelocity / self.electricField
         return self.mobility
         
     def computeAttenuationLength(self):

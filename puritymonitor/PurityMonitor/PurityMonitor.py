@@ -17,14 +17,30 @@ class PurityMonitor:
     def __str__(
         self
     ) -> str:
+        """
+        """
         return " ".join([
-            "{self.radioactiveSource} LAr purity monitor\n"
+            f"{str(self.radioactiveSource)} purity monitor\n"
+        ])
+    
+    def __repr__(
+        self
+    ) -> str:
+        """
+        """
+        return "\n".join([
+            f"PurityMonitor(",
+            *map(lambda line: f"  {line}", self.radioactiveSource.__repr__().split("\n")),
+            *map(lambda line: f"  {line}", self.geometry.__repr__().split("\n")),
+            ")"
         ])
         
     def draw(
         self,
         ax
     ) -> None:
+        """
+        """
         self.geometry.draw(ax)
 
     def energySpectra(
@@ -100,4 +116,7 @@ class PurityMonitor:
         ax,
         **kwargs
     ):
+        """
+        A wrapper for `self.geometry.plotAnodeSpectra(ax = ax, **kwargs)`.
+        """
         return self.geometry.plotAnodeSpectra(ax = ax, **kwargs)

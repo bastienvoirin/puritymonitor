@@ -126,9 +126,9 @@ class CylinderConcentricTwoPartAnode(Geometry):
         mask = (energy > self.energyBins.lower) & (energy < self.energyBins.upper)
         if 0 <= z <= self.driftLength:
             if (x**2 + y**2) <= self.innerRadius**2:
-                self.innerAnodeSpectrum[mask] += 1 # To do: increment event count for the right energy bin
+                self.innerAnodeSpectrum[mask] += 1
             elif (x**2 + y**2) <= self.outerRadius**2:
-                self.outerAnodeSpectrum[mask] += 1 # To do: increment event count for the right energy bin
+                self.outerAnodeSpectrum[mask] += 1
     
     def getAnodeSpectra(
         self
