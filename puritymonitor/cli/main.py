@@ -4,19 +4,62 @@ Utility functions which are common to all CLI commands.
 
 ####################################################################################################
 
-import argparse
+from argparse import ArgumentParser
 from itertools import permutations
 from matplotlib import pyplot as plt
 
 ####################################################################################################
 
-def printArgs(args):
+def createParser() -> ArgumentParser:
+    """
+    Create an argument parser for a CLI command.
+    """
+
+    parser = ArgumentParser()
+
+    # Figures:
+
+    parser.add_argument("-d", "--data", help = "plot data", action="store_true")
+    parser.add_argument("-g", "--geom", help = "plot geometry", action="store_true")
+    parser.add_argument("-s", "--simu", help = "plot simulation", action="store_true")
+
+    parser.add_argument("-dg", "--data-geom", help = "plot data and geometry", action="store_true")
+    parser.add_argument("-gd", "--geom-data", help = "plot geometry and data", action="store_true")
+    parser.add_argument("-ds", "--data-simu", help = "plot data and simulation", action="store_true")
+    parser.add_argument("-sd", "--simu-data", help = "plot simulation and data", action="store_true")
+    parser.add_argument("-gs", "--geom-simu", help = "plot geometry and simulation", action="store_true")
+    parser.add_argument("-sg", "--simu-geom", help = "plot simulation and geometry", action="store_true")
+
+    parser.add_argument("-dgs", "--data-geom-simu", help = "plot data, geometry, and simulation", action="store_true")
+    parser.add_argument("-dsg", "--data-simu-geom", help = "plot data, simulation, and geometry", action="store_true")
+    parser.add_argument("-gds", "--geom-data-simu", help = "plot geometry, data, and simulation", action="store_true")
+    parser.add_argument("-gsd", "--geom-simu-data", help = "plot geometry, simulation, and data", action="store_true")
+    parser.add_argument("-sdg", "--simu-data-geom", help = "plot simulation, data, and geometry", action="store_true")
+    parser.add_argument("-sgd", "--simu-geom-data", help = "plot simulation, geometry, and data", action="store_true")
+    
+    # Other arguments:
+    
+    parser.add_argument("-f", "--field", help = "electric field in V/cm", type = float, default = 1000.0)
+    parser.add_argument("-e", "--events", help = "number of events", type = int, default = 1000000)
+    parser.add_argument("-p", "--points", help = "number of points", type = int, default = 100)
+    parser.add_argument("-min", "--min-energy", help = "minimum energy in MeV", type = float, default = 0.0)
+    parser.add_argument("-max", "--max-energy", help = "maximum energy in MeV", type = float, default = 2.0)
+    parser.add_argument("-dev", "--energy-std-dev", help = "energy standard deviation in MeV", type = float, default = 0.05)
+    parser.add_argument("-scale", "--energy-scale", help = "energy scale", nargs = "*", type = float, default = [1.0])
+    parser.add_argument("-a", "--atten-dist", help = "attenuation distance in mm", type = float, default = 1000.0)
+    parser.add_argument("-if", "--input-files", help = "Input filenames", nargs = "*", type = str, default = [])
+
+    return parser
+
+####################################################################################################
+
+def printArguments(args):
     """
     Print a formatted summary of the arguments.
     """
     print("╔" + "═"*62 + "╗")
-    print("║" + " "*15 + f"{'puritymonitor command-line interface': <38}" + " "*15 + "║")
-    print("║" + " "*15 + f"{'   released under the MIT License   ': <38}" + " "*15 + "║")
+    print("║" + " "*13 + f"puritymonitor command-line interface" + " "*13 + "║")
+    print("║" + " "*13 + f"   released under the MIT License   " + " "*13 + "║")
     print("╠" + "═"*62 + "╣")
     
     for key, val in vars(args).items():
@@ -35,11 +78,11 @@ def printArgs(args):
 
 ####################################################################################################
 
-def getFigs(nPurityMonitors: int, args):
+def getFigures(nPurityMonitors: int, args):
     """
     """
+
     figs = {}
-    print()
     
     # These nested `for` loops iterate over all figure combinations
     for nRows in range(1, len("sdg") + 1):
@@ -56,11 +99,10 @@ def getFigs(nPurityMonitors: int, args):
             arg = "_".join(fig).replace("g", "geom").replace("s", "simu").replace("d", "data")
             fig = "".join(fig)
             
-            print(f"{'>' if vars(args)[arg] else ' '}", f"{fig: <3}", f"{arg: <15}", f"{nRows: <3}", title)
-            
             if vars(args)[arg]:
                 figs[fig] = (plt.figure(title, figsize = (6 * nPurityMonitors, 4 * nRows)), arg)
-                plt.get_current_fig_manager().set_window_title(title)  
+                plt.get_current_fig_manager().set_window_title(title)
+
     return nPurityMonitors, figs
 
 ####################################################################################################

@@ -24,3 +24,7 @@ from .PurityMonitor import (
     PurityMonitorFullDecay,      # Not implemented
     PurityMonitorFullDecayTimed, # Not implemented
 )
+
+from .cli import (
+    cctpa
+)

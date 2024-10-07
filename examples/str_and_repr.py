@@ -2,7 +2,7 @@ from numpy import array
 from puritymonitor import (
     Bi207,
     CylinderConcentricTwoPartAnode,
-    EnergyBins,
+    EnergyBins, # Needed to assert eval(repr(energyBins)) == energyBins
     PurityMonitorInitDecay
 )
 
