@@ -19,9 +19,7 @@ class PurityMonitor:
     ) -> str:
         """
         """
-        return " ".join([
-            f"{str(self.radioactiveSource)} purity monitor\n"
-        ])
+        return f"purity monitor ({self.radioactiveSource}, {self.geometry})"
     
     def __repr__(
         self
@@ -29,11 +27,21 @@ class PurityMonitor:
         """
         """
         return "\n".join([
-            f"PurityMonitor(",
-            *map(lambda line: f"  {line}", self.radioactiveSource.__repr__().split("\n")),
-            *map(lambda line: f"  {line}", self.geometry.__repr__().split("\n")),
+            f"{self.__class__.__name__}(",
+            "\n".join(map(lambda line: f"  {line}", repr(self.radioactiveSource).split("\n"))) + ",",
+            "\n".join(map(lambda line: f"  {line}", repr(self.geometry).split("\n"))),
             ")"
         ])
+    
+    def __eq__(
+        self,
+        other
+    ):
+        """
+        """
+        if not isinstance(other, self.__class__):
+            raise NotImplementedError
+        return self.radioactiveSource == other.radioactiveSource and self.geometry == other.geometry
         
     def draw(
         self,

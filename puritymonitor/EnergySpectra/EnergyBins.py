@@ -25,12 +25,27 @@ class EnergyBins:
     ):
         return "\n".join([
             "EnergyBins(",
-            f"  lower = {self.lower},",
-            f"  upper = {self.upper},",
-            f"  nBins = {self.nBins},",
-            f"  binWidth = {self.binWidth}",
+            f"  lower = {repr(self.lower)},",
+            f"  upper = {repr(self.upper)},",
+            f"  nBins = {repr(self.nBins)},",
+            f"  binWidth = {repr(self.binWidth)}",
             ")"
         ])
+    
+    def __eq__(
+        self,
+        other
+    ):
+        """
+        """
+        if not isinstance(other, self.__class__):
+            raise NotImplementedError
+        return (
+                all(np.isclose(self.lower, other.lower, atol = 0.0, rtol= 1e-12))
+            and all(np.isclose(self.upper, other.upper, atol = 0.0, rtol= 1e-12))
+            and self.nBins == other.nBins
+            and self.binWidth == other.binWidth
+        )
     
     def fromRange(
         self,

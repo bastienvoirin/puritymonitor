@@ -18,12 +18,14 @@ class PurityMonitorInitDecay(PurityMonitor):
     def __str__(
         self
     ) -> str:
-        return " ".join([
-            "{self.radioactiveSource} LAr purity monitor (initial decay only)\n"
-        ])
-        
+        """
+        """
+        return f"purity monitor ({self.radioactiveSource}, {self.geometry}, initial decay only)"
+    
     def draw(
         self,
         ax
     ) -> None:
+        """
+        """
         self.geometry.draw(ax)

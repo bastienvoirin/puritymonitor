@@ -1,4 +1,5 @@
 import numpy as np
+from ..EnergySpectra import EnergyBins
 
 ####################################################################################################
 
@@ -39,19 +40,33 @@ class Geometry:
     def __init__(
         self
     ):
-        self.description = "Geometry"
-        self.energyBins = None
+        self.description = "geometry"
+        self.energyBins = EnergyBins()
         
     def __str__(
         self
     ):
+        """
+        """
         return self.description
         
     def __repr__(
         self
     ):
-        return self.description + "()"
+        """
+        """
+        return self.__class__.__name__ + "()"
         
+    def __eq__(
+        self,
+        other
+    ):
+        """
+        """
+        if not isinstance(other, self.__class__):
+            raise NotImplementedError
+        raise NotImplementedError
+    
     def draw(
         self,
         ax

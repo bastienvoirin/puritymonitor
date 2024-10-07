@@ -14,7 +14,7 @@ class CylinderConcentricTwoPartAnode(Geometry):
         outerRadius: float, # mm
         driftLength: float  # mm
     ):
-        self.description = "CylinderConcentricTwoPartAnode"
+        self.description = "cylindrical geometry with two concentric anodes"
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
@@ -22,6 +22,31 @@ class CylinderConcentricTwoPartAnode(Geometry):
         self.innerAnodeSpectrum = []
         self.outerAnodeSpectrum = []
         
+    def __repr__(
+        self
+    ):
+        return "\n".join([
+            f"{self.__class__.__name__}(",
+            f"  innerRadius = {repr(self.innerRadius)}, # mm",
+            f"  outerRadius = {repr(self.outerRadius)}, # mm",
+            f"  driftLength = {repr(self.driftLength)}  # mm",
+            ")"
+        ])
+    
+    def __eq__(
+        self,
+        other
+    ):
+        """
+        """
+        if not isinstance(other, self.__class__):
+            raise NotImplementedError
+        return (
+                self.innerRadius == self.innerRadius
+            and self.outerRadius == self.outerRadius
+            and self.driftLength == self.driftLength
+        )
+    
     def draw(
         self,
         ax

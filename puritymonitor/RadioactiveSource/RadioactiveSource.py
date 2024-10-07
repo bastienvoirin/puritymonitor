@@ -54,16 +54,34 @@ class RadioactiveSource:
         self
     ) -> str:
         return "\n".join([
-            f"RadioactiveSource(",
-            f"  electronEnergy = {self.electronEnergy}",
-            f"  gammaEnergy = {self.gammaEnergy}",
-            f"  electronProba = {self.electronProba}",
-            f"  gammaProba = {self.gammaProba}",
-            f"  gammaComptonDistance = {self.gammaComptonDistance}",
-            f"  activity = {self.activity}",
-            f"  description = {self.description}",
+            f"{self.__class__.__name__}(",
+            f"  electronEnergy = {repr(self.electronEnergy)},",
+            f"  gammaEnergy = {repr(self.gammaEnergy)},",
+            f"  electronProba = {repr(self.electronProba)},",
+            f"  gammaProba = {repr(self.gammaProba)},",
+            f"  gammaComptonDistance = {repr(self.gammaComptonDistance)},",
+            f"  activity = {repr(self.activity)},",
+            f"  description = {repr(self.description)}",
             f")"
-        ])
+        ]).replace("nan", "float('NaN')")
+    
+    def __eq__(
+        self,
+        other
+    ):
+        """
+        """
+        if not isinstance(other, self.__class__):
+            raise NotImplementedError
+        return (
+                self.electronEnergy == other.electronEnergy
+            and self.gammaEnergy == other.gammaEnergy
+            and self.electronProba == other.electronProba
+            and self.gammaProba == other.gammaProba
+            and self.gammaComptonDistance == other.gammaComptonDistance
+            and (self.activity == other.activity or (np.isnan(self.activity) and np.isnan(other.activity)))
+            and self.description == self.description
+        )
     
     def decay(
         self,
