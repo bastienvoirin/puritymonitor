@@ -19,29 +19,30 @@ def createParser() -> ArgumentParser:
 
     # Figures:
 
-    parser.add_argument("-d", "--data", help = "plot data", action="store_true")
-    parser.add_argument("-g", "--geom", help = "plot geometry", action="store_true")
-    parser.add_argument("-s", "--simu", help = "plot simulation", action="store_true")
+    parser.add_argument("-d", "--data", help = "plot data", action = "store_true")
+    parser.add_argument("-g", "--geom", help = "plot geometry", action = "store_true")
+    parser.add_argument("-s", "--simu", help = "plot simulation", action = "store_true")
 
-    parser.add_argument("-dg", "--data-geom", help = "plot data and geometry", action="store_true")
-    parser.add_argument("-gd", "--geom-data", help = "plot geometry and data", action="store_true")
-    parser.add_argument("-ds", "--data-simu", help = "plot data and simulation", action="store_true")
-    parser.add_argument("-sd", "--simu-data", help = "plot simulation and data", action="store_true")
-    parser.add_argument("-gs", "--geom-simu", help = "plot geometry and simulation", action="store_true")
-    parser.add_argument("-sg", "--simu-geom", help = "plot simulation and geometry", action="store_true")
+    parser.add_argument("-dg", "--data-geom", help = "plot data and geometry", action = "store_true")
+    parser.add_argument("-gd", "--geom-data", help = "plot geometry and data", action = "store_true")
+    parser.add_argument("-ds", "--data-simu", help = "plot data and simulation", action = "store_true")
+    parser.add_argument("-sd", "--simu-data", help = "plot simulation and data", action = "store_true")
+    parser.add_argument("-gs", "--geom-simu", help = "plot geometry and simulation", action = "store_true")
+    parser.add_argument("-sg", "--simu-geom", help = "plot simulation and geometry", action = "store_true")
 
-    parser.add_argument("-dgs", "--data-geom-simu", help = "plot data, geometry, and simulation", action="store_true")
-    parser.add_argument("-dsg", "--data-simu-geom", help = "plot data, simulation, and geometry", action="store_true")
-    parser.add_argument("-gds", "--geom-data-simu", help = "plot geometry, data, and simulation", action="store_true")
-    parser.add_argument("-gsd", "--geom-simu-data", help = "plot geometry, simulation, and data", action="store_true")
-    parser.add_argument("-sdg", "--simu-data-geom", help = "plot simulation, data, and geometry", action="store_true")
-    parser.add_argument("-sgd", "--simu-geom-data", help = "plot simulation, geometry, and data", action="store_true")
+    parser.add_argument("-dgs", "--data-geom-simu", help = "plot data, geometry, and simulation", action = "store_true")
+    parser.add_argument("-dsg", "--data-simu-geom", help = "plot data, simulation, and geometry", action = "store_true")
+    parser.add_argument("-gds", "--geom-data-simu", help = "plot geometry, data, and simulation", action = "store_true")
+    parser.add_argument("-gsd", "--geom-simu-data", help = "plot geometry, simulation, and data", action = "store_true")
+    parser.add_argument("-sdg", "--simu-data-geom", help = "plot simulation, data, and geometry", action = "store_true")
+    parser.add_argument("-sgd", "--simu-geom-data", help = "plot simulation, geometry, and data", action = "store_true")
     
     # Other arguments:
-    
+
+    parser.add_argument("-q", "--quiet", help = "do not print in the console", action = "store_true")
     parser.add_argument("-f", "--field", help = "electric field in V/cm", type = float, default = 1000.0)
     parser.add_argument("-e", "--events", help = "number of events", type = int, default = 1000000)
-    parser.add_argument("-p", "--points", help = "number of points", type = int, default = 100)
+    parser.add_argument("-p", "--points", help = "number of points (i.e. energy bins)", type = int, default = 100)
     parser.add_argument("-min", "--min-energy", help = "minimum energy in MeV", type = float, default = 0.0)
     parser.add_argument("-max", "--max-energy", help = "maximum energy in MeV", type = float, default = 2.0)
     parser.add_argument("-dev", "--energy-std-dev", help = "energy standard deviation in MeV", type = float, default = 0.05)
@@ -53,13 +54,29 @@ def createParser() -> ArgumentParser:
 
 ####################################################################################################
 
-def printArguments(args):
+def printURI(uri: str, label: str = None) -> str:
+    if label is None: 
+        label = uri
+    return f"\033]8;;{uri}\033\\{label}\033]8;;\033\\"
+
+####################################################################################################
+
+def printArguments(command: str, args):
     """
     Print a formatted summary of the arguments.
     """
+
+    if args.quiet:
+        return
+
+    repository = ("https://github.com/bastienvoirin/puritymonitor", "puritymonitor")
+    license = ("https://github.com/bastienvoirin/puritymonitor/blob/main/LICENSE", "MIT License")
+
     print("╔" + "═"*62 + "╗")
-    print("║" + " "*13 + f"puritymonitor command-line interface" + " "*13 + "║")
-    print("║" + " "*13 + f"   released under the MIT License   " + " "*13 + "║")
+    print("║" + " "*13 + f"{printURI(*repository)} command-line interface" + " "*13 + "║")
+    print("║" + " "*16 + f"released under the {printURI(*license)}" + " "*16 + "║")
+    print("╠" + "═"*62 + "╣")
+    print("║" + f" {command: <60} " + "║")
     print("╠" + "═"*62 + "╣")
     
     for key, val in vars(args).items():
@@ -74,7 +91,6 @@ def printArguments(args):
             print(f"║ {key+' ':.<17} {str(val)+' ':.<35} {type(val).__name__: <6} ║")
             
     print("╚" + "═"*62 + "╝")
-    return
 
 ####################################################################################################
 

@@ -33,5 +33,5 @@ if __name__ == "__main__":
     parser = createParser()
     addArguments(parser)
     arguments = parser.parse_args()
-    printArguments(arguments)
+    printArguments("python -m puritymonitor.cli.cctpa", arguments)
     main(arguments)

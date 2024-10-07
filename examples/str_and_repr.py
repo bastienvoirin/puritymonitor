@@ -1,4 +1,4 @@
-from numpy import array
+from numpy import array # Needed to assert eval(repr(...)) = ...
 from puritymonitor import (
     Bi207,
     CylinderConcentricTwoPartAnode,
@@ -7,8 +7,6 @@ from puritymonitor import (
 )
 
 if __name__ == "__main__":
-    # Dual purity monitor definition:
-
     source = Bi207()
     print(source)
     print()
