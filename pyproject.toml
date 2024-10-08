@@ -25,9 +25,15 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Physics"
 ]
 
+[project.optional-dependencies]
+dev = [
+  "ruff"
+]
+test = []
+
 [project.urls]
-#Homepage = ""
-#Documentation = ""
+Homepage = "https://github.com/bastienvoirin/puritymonitor"
+Documentation = "https://github.com/bastienvoirin/puritymonitor/blob/main/docs/manual.pdf"
 Repository = "https://github.com/bastienvoirin/puritymonitor.git"
 Issues = "https://github.com/bastienvoirin/puritymonitor/issues"
 Changelog = "https://github.com/bastienvoirin/puritymonitor/blob/main/CHANGELOG.md"

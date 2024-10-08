@@ -62,7 +62,7 @@ class RadioactiveSource:
             f"  gammaComptonDistance = {repr(self.gammaComptonDistance)},",
             f"  activity = {repr(self.activity)},",
             f"  description = {repr(self.description)}",
-            f")"
+            ")"
         ]).replace("nan", "float('NaN')")
     
     def __eq__(

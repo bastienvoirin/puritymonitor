@@ -1,14 +1,14 @@
-from matplotlib import pyplot as plt
-import matplotlib as mpl
-plt.rc("font", family = "serif", size = 11)
-mpl.rc("text", usetex = True)
-mpl.rc("legend", fontsize = 11)
-
 from puritymonitor import (
     Bi207,
     CylinderConcentricTwoPartAnode as Cylinder,
     PurityMonitorInitDecay as PM
 )
+
+from matplotlib import pyplot as plt
+import matplotlib as mpl
+plt.rc("font", family = "serif", size = 11)
+mpl.rc("text", usetex = True)
+mpl.rc("legend", fontsize = 11)
 
 if __name__ == "__main__":
     # Dual purity monitor definition:

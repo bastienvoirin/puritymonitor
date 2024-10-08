@@ -258,4 +258,4 @@ class CylinderConcentricTwoPartAnode(Geometry):
         # Legend:
 
         lns = lns1 + lns2 + lns3 + lns4
-        axOuter.legend(lns, map(lambda l: l.get_label(), lns), handlelength = 1)
+        axOuter.legend(lns, map(lambda ln: ln.get_label(), lns), handlelength = 1)
