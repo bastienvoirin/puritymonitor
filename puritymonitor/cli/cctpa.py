@@ -21,14 +21,16 @@ def addArguments(parser: ArgumentParser):
 ####################################################################################################
 
 def main(arguments):
+    """
+    """
 
     # To do
 
-    print(arguments)
-    #subplots = getSubplots(*getFigures(1, arguments))
+    subplots = getSubplots(*getFigures(1, arguments))
+    subplots
 
     # To do
-    
+
     return
 
 ####################################################################################################
