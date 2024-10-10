@@ -73,8 +73,9 @@ class EnergySpectra:
         self.energyBins = EnergyBins() # To do
         return self
 
-    @staticmethod
+    @classmethod
     def fit(
+        cls,
         energyBins: EnergyBins,
         spectrum,
         initialGuess: tuple[float, float, float] = (None, None, None)
@@ -88,19 +89,23 @@ class EnergySpectra:
         """
 
         amplitude, mean, std_dev = initialGuess
-        
+
         argmax = np.argmax(spectrum)
 
         amplitude = amplitude if amplitude is not None else spectrum[argmax]
         mean = mean if mean is not None else (energyBins.lower[argmax] + energyBins.upper[argmax]) / 2
         std_dev = std_dev if std_dev is not None else 0.5
         
-        (amplitude, mean, std_dev), _ = curve_fit(
-            f = gaussian,
-            xdata = (energyBins.lower + energyBins.upper) / 2,
-            ydata = spectrum,
-            p0 = (amplitude, mean, std_dev)
-        )
+        try:
+            (amplitude, mean, std_dev), _ = curve_fit(
+                f = gaussian,
+                xdata = (energyBins.lower + energyBins.upper) / 2,
+                ydata = spectrum,
+                p0 = (amplitude, mean, std_dev)
+            )
+        except RuntimeError:
+            print("Error: Gaussian fit failed.")
+
         energies = np.linspace(energyBins.lower[0], energyBins.upper[-1], 1000)
         fitted = gaussian(energies, amplitude, mean, std_dev)
         

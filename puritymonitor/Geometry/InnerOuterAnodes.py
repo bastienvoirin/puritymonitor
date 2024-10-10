@@ -103,16 +103,19 @@ class InnerOuterAnodes(Geometry):
 
         # Gaussian fit of the ~1 MeV peak:
 
-        try:
-            (_, peakEnergy, _), energy, gaussian = EnergySpectra.fit(
-                self.energyBins,
-                self.innerAnodeSpectrum - self.outerAnodeSpectrum / scale
-            )
-            lns4 = axInner.plot(energy, gaussian, label = "Gaussian peak", color = fittedPeakColor)
-        except Exception as exception:
-            print(repr(exception))
+        (_, peakEnergy, _), energy, gaussian = EnergySpectra.fit(
+            self.energyBins,
+            self.innerAnodeSpectrum - self.outerAnodeSpectrum / scale
+        )
+        lns4 = axInner.plot(energy, gaussian, label = "Gaussian peak", color = fittedPeakColor)
 
         # Legend:
 
         lns = lns1 + lns2 + lns3 + lns4
-        axOuter.legend(lns, map(lambda ln: ln.get_label(), lns), handlelength = 1)
+        axOuter.legend(
+            lns,
+            map(lambda ln: ln.get_label(), lns),
+            handlelength = 1,
+            borderaxespad = 0.1,
+            fancybox = False
+        ).get_frame().set_linewidth(0)
