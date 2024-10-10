@@ -1,5 +1,5 @@
 from math import isnan
-from typing import Callable # For type hint only
+from typing import Callable, Self
 
 # For type hint only
 from ..types import (
@@ -21,14 +21,14 @@ class Medium:
     def __init__(
         self,
         temperature: float_K = float("NaN"),
-        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = None,
+        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = Self.defaultMobility,
         electricField: float_V_per_cm = float("NaN"),
         driftVelocity: float_cm_per_µs = float("NaN"),
         lifetime: float_µs = float("NaN"),
         attenuationLength: float_cm = float("NaN")
     ):
         self.temperature = temperature
-        self.mobility = mobility if mobility is not None else self.defaultMobility
+        self.mobility = mobility
         self.electricField = electricField
         self.driftVelocity = driftVelocity
         self.lifetime = lifetime
@@ -74,8 +74,9 @@ class Medium:
             ")"
         ])
     
-    @staticmethod
+    @classmethod
     def defaultMobility(
+        cls,
         temperature: float_K,
         electricField: float_V
     ) -> float_cm2_per_μs_per_V:

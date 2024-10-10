@@ -1,5 +1,6 @@
 import numpy as np
 from ..EnergySpectra import EnergyBins
+from ..types import float_mm
 
 ####################################################################################################
 
@@ -93,7 +94,7 @@ class Geometry:
     
     def decayVertexAndDirection(
         self
-    ) -> tuple[tuple[float, float, float], tuple[float, float]]:
+    ) -> tuple[tuple[float_mm, float_mm, float_mm], tuple[float, float, float]]:
         """
         Sample a random IC electron or gamma emission vertex at the surface of the radioactive
         source, and a random direction in the upper half-space (i.e. from the cathode plane to the

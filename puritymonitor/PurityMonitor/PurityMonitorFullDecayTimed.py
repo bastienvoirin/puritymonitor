@@ -9,7 +9,7 @@ class PurityMonitorFullDecayTimed(PurityMonitor):
         self,
         radioactiveSource: RadioactiveSource,
         geometry: Geometry
-    ) -> None:
+    ):
         raise NotImplementedError
         super().__init__(
             radioactiveSource = radioactiveSource,

@@ -9,7 +9,7 @@ class PurityMonitorInitDecay(PurityMonitor):
         self,
         radioactiveSource: RadioactiveSource,
         geometry: Geometry
-    ) -> None:
+    ):
         super().__init__(
             radioactiveSource = radioactiveSource,
             geometry = geometry
@@ -25,7 +25,7 @@ class PurityMonitorInitDecay(PurityMonitor):
     def draw(
         self,
         ax
-    ) -> None:
+    ):
         """
         """
         self.geometry.draw(ax)

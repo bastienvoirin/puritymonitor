@@ -1,4 +1,5 @@
 from . import Medium
+from typing import Callable, Self
 
 # For type hint only
 from ..types import (
@@ -20,7 +21,7 @@ class LAr(Medium):
     def __init__(
         self,
         temperature: float_K = float("NaN"),
-        mobility = None,
+        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = Self.defaultMobility,
         electricField: float_V_per_cm = float("NaN"),
         driftVelocity: float_cm_per_µs = float("NaN"),
         lifetime: float_µs = float("NaN"),
@@ -35,8 +36,9 @@ class LAr(Medium):
             attenuationLength
         )
         
-    @staticmethod
+    @classmethod
     def defaultMobility(
+        cls,
         temperature: float_K,
         electricField: float_V
     ) -> float_cm2_per_μs_per_V:

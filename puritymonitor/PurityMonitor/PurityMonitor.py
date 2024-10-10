@@ -41,7 +41,7 @@ class PurityMonitor:
         """
         if not isinstance(other, self.__class__):
             raise NotImplementedError
-        return self.radioactiveSource == other.radioactiveSource and self.geometry == other.geometry
+        return (self.radioactiveSource == other.radioactiveSource) and (self.geometry == other.geometry)
         
     def draw(
         self,

@@ -1,3 +1,4 @@
+from sys import stderr
 from typing import Self # For type hint only (Python >= 3.11)
 from . import EnergyBins
 import numpy as np
@@ -104,7 +105,7 @@ class EnergySpectra:
                 p0 = (amplitude, mean, std_dev)
             )
         except RuntimeError:
-            print("Error: Gaussian fit failed.")
+            print("Error: Gaussian fit failed.", file = stderr)
 
         energies = np.linspace(energyBins.lower[0], energyBins.upper[-1], 1000)
         fitted = gaussian(energies, amplitude, mean, std_dev)
