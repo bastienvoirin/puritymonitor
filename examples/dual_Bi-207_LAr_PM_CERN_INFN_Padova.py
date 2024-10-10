@@ -28,9 +28,9 @@ if __name__ == "__main__":
         "nEvents": 1000000,
         "nBins": 100,
         "minEnergy": 0.0,
-        "maxEnergy": 2.0,
+        "maxEnergy": 1.8,
         "energyScale": 1.0,
-        "energyStdDev": 0.05,
+        "energyStdDev": 0.04,
         "attDistance": 1000.0
     }
 
