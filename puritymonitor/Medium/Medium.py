@@ -1,6 +1,17 @@
 from math import isnan
 from typing import Callable # For type hint only
 
+# For type hint only
+from ..types import (
+    float_K,
+    float_V,
+    float_µs,
+    float_cm,
+    float_V_per_cm,
+    float_cm_per_μs,
+    float_cm2_per_μs_per_V
+)
+
 ####################################################################################################
 
 class Medium:
@@ -9,12 +20,12 @@ class Medium:
     """
     def __init__(
         self,
-        temperature: float = float("NaN"),                # K
-        mobility: Callable[[float, float], float] = None, # (cm/µs) / (V/cm)
-        electricField: float = float("NaN"),              # V/cm
-        driftVelocity: float = float("NaN"),              # cm/µs
-        lifetime: float = float("NaN"),                   # µs
-        attenuationLength: float = float("NaN")           # cm
+        temperature: float_K = float("NaN"),
+        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = None,
+        electricField: float_V_per_cm = float("NaN"),
+        driftVelocity: float_cm_per_µs = float("NaN"),
+        lifetime: float_µs = float("NaN"),
+        attenuationLength: float_cm = float("NaN")
     ):
         self.temperature = temperature
         self.mobility = mobility if mobility is not None else self.defaultMobility
@@ -65,9 +76,9 @@ class Medium:
     
     @staticmethod
     def defaultMobility(
-        temperature: float,
-        electricField: float
-    ) -> float:
+        temperature: float_K,
+        electricField: float_V
+    ) -> float_cm2_per_μs_per_V:
         """
         """
         raise NotImplementedError

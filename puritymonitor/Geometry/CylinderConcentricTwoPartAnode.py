@@ -1,26 +1,27 @@
+from ..types import float_mm, float_MeV # For type hint only
 from ..EnergySpectra import EnergyBins, EnergySpectra
 from .Geometry import Geometry, cylinder, ring
+from .InnerOuterAnodes import InnerOuterAnodes
 import numpy as np
 
 ####################################################################################################
 
-class CylinderConcentricTwoPartAnode(Geometry):
+class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
     """
     Cylindrical TPC geometry with concentric inner disk anode and outer ring anode.
     """
     def __init__(
         self,
-        innerRadius: float, # mm
-        outerRadius: float, # mm
-        driftLength: float  # mm
+        innerRadius: float_mm,
+        outerRadius: float_mm,
+        driftLength: float_mm
     ):
+        super().__init__()
         self.description = "cylindrical geometry with two concentric anodes"
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
         self.energyBins = EnergyBins()
-        self.innerAnodeSpectrum = []
-        self.outerAnodeSpectrum = []
         
     def __repr__(
         self
@@ -105,7 +106,7 @@ class CylinderConcentricTwoPartAnode(Geometry):
     
     def decayVertexAndDirection(
         self
-    ) -> tuple[tuple[float, float, float], tuple[float, float]]:
+    ) -> tuple[tuple[float_mm, float_mm, float_mm], tuple[float, float, float]]:
         """
         Sample a random IC electron or gamma emission vertex at the surface of the radioactive
         source, and a random direction in the upper half-space (i.e. from the cathode plane to the
@@ -130,8 +131,8 @@ class CylinderConcentricTwoPartAnode(Geometry):
     def resetAnodeSpectra(
         self,
         nBins: int = 100,
-        minEnergy: float = 0.0, # MeV
-        maxEnergy: float = 2.0  # MeV
+        minEnergy: float_MeV = 0.0,
+        maxEnergy: float_MeV = 2.0
     ):
         self.innerAnodeSpectrum = np.zeros(nBins, dtype = int)
         self.outerAnodeSpectrum = np.zeros(nBins, dtype = int)
@@ -143,10 +144,10 @@ class CylinderConcentricTwoPartAnode(Geometry):
     
     def updateAnodeSpectra(
         self,
-        x: float, # mm
-        y: float, # mm
-        z: float, # mm
-        energy: float # MeV
+        x: float_mm,
+        y: float_mm,
+        z: float_mm,
+        energy: float_MeV
     ):
         mask = (energy > self.energyBins.lower) & (energy < self.energyBins.upper)
         if 0 <= z <= self.driftLength:

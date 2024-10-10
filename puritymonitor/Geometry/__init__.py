@@ -1,2 +1,3 @@
 from .Geometry import Geometry
+from .InnerOuterAnodes import InnerOuterAnodes
 from .CylinderConcentricTwoPartAnode import CylinderConcentricTwoPartAnode

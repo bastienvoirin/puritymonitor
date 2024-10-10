@@ -5,12 +5,16 @@ from scipy.optimize import curve_fit
 
 ####################################################################################################
 
-def gaussian(x, *params):
+def gaussian(
+        x,
+        amplitude: float,
+        mean: float,
+        std_dev: float
+    ):
     """
     Compute a Gaussian.
     """
-    a, mu, sigma = params
-    return a * np.exp(-(x - mu)**2 / (2.0 * sigma**2))
+    return amplitude * np.exp(-(x - mean)**2 / (2.0 * std_dev**2))
 
 ####################################################################################################
 
@@ -18,8 +22,8 @@ class EnergySpectra:
     def __init__(
         self,
         energyBins: EnergyBins = None,
-        spectra: list = None,
-        labels: list[str] = None
+        spectra: list = [],
+        labels: list[str] = []
     ) -> None:
         self.energyBins = energyBins
         self.spectra = spectra
@@ -81,27 +85,23 @@ class EnergySpectra:
         ```
         EnergySpectra.fit(energyBins, spectrum, initialGuess)
         ```
-
-        or
-
-        ```
-        EnergySpectra().fit(energyBins, spectrum, initialGuess)
-        ```
         """
 
-        a, mu, sigma = initialGuess
-        argmax = np.argmax(spectrum)
-        a = a if a is not None else spectrum[argmax]
-        mu = mu if mu is not None else (energyBins.lower[argmax] + energyBins.upper[argmax]) / 2
-        sigma = sigma if sigma is not None else 0.5
+        amplitude, mean, std_dev = initialGuess
         
-        params, _ = curve_fit(
+        argmax = np.argmax(spectrum)
+
+        amplitude = amplitude if amplitude is not None else spectrum[argmax]
+        mean = mean if mean is not None else (energyBins.lower[argmax] + energyBins.upper[argmax]) / 2
+        std_dev = std_dev if std_dev is not None else 0.5
+        
+        (amplitude, mean, std_dev), _ = curve_fit(
             f = gaussian,
             xdata = (energyBins.lower + energyBins.upper) / 2,
             ydata = spectrum,
-            p0 = (a, mu, sigma)
+            p0 = (amplitude, mean, std_dev)
         )
         energies = np.linspace(energyBins.lower[0], energyBins.upper[-1], 1000)
-        fitted = gaussian(energies, *params)
+        fitted = gaussian(energies, amplitude, mean, std_dev)
         
-        return params, energies, fitted
+        return (amplitude, mean, std_dev), energies, fitted
