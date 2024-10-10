@@ -3,6 +3,8 @@
 
 # Python package for noble liquid (e.g. liquid argon) purity monitors based on radioactive electron sources (e.g. Bi-207)
 
+![](/static/dual_pm.svg)
+
 ## Usage
 
 [Manual](/docs/manual%20(under%20development).pdf).
