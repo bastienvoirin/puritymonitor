@@ -21,14 +21,14 @@ class Medium:
     def __init__(
         self,
         temperature: float_K = float("NaN"),
-        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = Self.defaultMobility,
+        mobility: Callable[[float_K, float_V], float_cm2_per_μs_per_V] = None,
         electricField: float_V_per_cm = float("NaN"),
         driftVelocity: float_cm_per_µs = float("NaN"),
         lifetime: float_µs = float("NaN"),
         attenuationLength: float_cm = float("NaN")
     ):
         self.temperature = temperature
-        self.mobility = mobility
+        self.mobility = mobility if mobility else self.defautMobility
         self.electricField = electricField
         self.driftVelocity = driftVelocity
         self.lifetime = lifetime
@@ -81,6 +81,8 @@ class Medium:
         electricField: float_V
     ) -> float_cm2_per_μs_per_V:
         """
+        
+        This method must be implemented in derived classes.
         """
         raise NotImplementedError
         

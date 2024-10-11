@@ -1,6 +1,6 @@
 import numpy as np
 from ..EnergySpectra import EnergyBins
-from ..types import float_mm
+from ..types import float_mm, float_MeV
 
 ####################################################################################################
 
@@ -10,6 +10,8 @@ def cylinder(
     centerX: float = 0.0,
     centerY: float = 0.0
 ):
+    """
+    """
     z = np.linspace(0, height, 10)
     theta = np.linspace(0, 2*np.pi, 100)
     thetaCyl, zCyl = np.meshgrid(theta, z)
@@ -26,6 +28,8 @@ def ring(
     centerX: float = 0.0,
     centerY: float = 0.0
 ):
+    """
+    """
     r = np.linspace(innerRadius, outerRadius, 10)
     u = np.linspace(0, 2*np.pi, 100)
     x = centerX + np.outer(r, np.cos(u))
@@ -63,9 +67,28 @@ class Geometry:
         other
     ):
         """
+        Equality test between two `Geometry` instances, i.e. whether they describe the same
+        geometry. In Python,
+
+        ```
+        geometry1 == geometry2
+        ```
+
+        calls
+
+        ```
+        geometry1.__eq__(geometry2)
+        ```
+        
+        under the hood.
+        
+        This method must be implemented in derived classes.
         """
+
+        # Comparison between a `Geometry` instance and any other object is not implemented.
         if not isinstance(other, self.__class__):
             raise NotImplementedError
+        
         raise NotImplementedError
     
     def draw(
@@ -81,9 +104,9 @@ class Geometry:
     
     def isInsideActiveVolume(
         self,
-        x: float,
-        y: float,
-        z: float
+        x: float_mm,
+        y: float_mm,
+        z: float_mm
     ):
         """
         Indicate whether a given 3D point (x, y, z) lies inside the active volume.
@@ -107,8 +130,8 @@ class Geometry:
     def resetAnodeSpectra(
         self,
         nBins: int = 100,
-        minEnergy: float = 0.0, # MeV
-        maxEnergy: float = 2.0  # MeV
+        minEnergy: float_MeV = 0.0, # MeV
+        maxEnergy: float_MeV = 2.0  # MeV
     ) -> None:
         """
         This method must be implemented in derived classes.

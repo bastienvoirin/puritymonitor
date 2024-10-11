@@ -13,29 +13,56 @@ def gaussian(
         std_dev: float
     ):
     """
-    Compute a Gaussian.
+    Compute a Gaussian of given amplitude, mean, and standard deviation.
     """
     return amplitude * np.exp(-(x - mean)**2 / (2.0 * std_dev**2))
 
 ####################################################################################################
 
 class EnergySpectra:
+    """
+    """
+
     def __init__(
         self,
-        energyBins: EnergyBins = None,
+        energyBins: EnergyBins,
         spectra: list = [],
         labels: list[str] = []
-    ) -> None:
+    ):
         self.energyBins = energyBins
         self.spectra = spectra
         self.labels = labels
         
+    def __str__(
+        self
+    ) -> str:
+        """
+        Readable representation of an `EnergySpectra` instance.
+        """
+        return f"EnergySpectra({", ".join(self.labels)}; {str(self.energyBins)})"
+    
+    def __repr__(
+        self
+    ) -> str:
+        """
+        Unambiguous, explicit string representation of an `EnergySpectra` instance.
+        """
+        return "\n".join([
+            "EnergySpectra(",
+            f"  energyBins = {repr(self.energyBins)},",
+            f"  spectra = {repr(self.spectra)},",
+            f"  labels = {repr(self.labels)}",
+            ")"
+        ])
+    
     def save(
         self,
         filename: str
     ) -> Self:
         """
+        Save the energy spectra to a `csv` file or any other text-based file.
         """
+
         if len(self.spectra) != len(self.labels):
             raise ValueError("You must provide an equal number of energy spectra and energy spectra labels.")
         
@@ -54,10 +81,13 @@ class EnergySpectra:
         filename: str
     ) -> Self:
         """
+        Load energy spectra from a `csv` file or any other text-based file.
         """
+
         lowerEnergy = []
+
         with open(filename, "r") as inputFile:
-            # Header
+            # Header (labels for the energy column and each spectrum)
             self.labels = next(inputFile).split(",")
             
             # Body (energies and events per energy bin for each spectrum)
@@ -71,7 +101,8 @@ class EnergySpectra:
                 lowerEnergy.append(currentEnergy)
                 for savedSpectrum, readSpectrum in zip(self.spectra, currentSpectra):
                     savedSpectrum.append(readSpectrum)
-        self.energyBins = EnergyBins() # To do
+
+        self.energyBins = EnergyBins.fromLower(lowerEnergy)
         return self
 
     @classmethod

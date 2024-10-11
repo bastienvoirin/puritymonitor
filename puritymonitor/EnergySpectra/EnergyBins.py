@@ -1,14 +1,20 @@
 import numpy as np
+from collections.abc import Iterable # For type hint only
+from ..types import float_MeV # For type hint only
 
 ####################################################################################################
 
 class EnergyBins:
+    """
+    Utility class allowing easy manipulation of energy discretization over a given range.
+    """
+
     def __init__(
         self,
-        lower = None,
-        upper = None,
-        nBins: int = None,
-        binWidth: float = None
+        lower: Iterable[float_MeV],
+        upper: Iterable[float_MeV],
+        nBins: int,
+        binWidth: float_MeV
     ):
         self.lower = lower
         self.upper = upper
@@ -17,12 +23,18 @@ class EnergyBins:
 
     def __str__(
         self
-    ):
+    ) -> str:
+        """
+        Readable representation of an `EnergyBins` instance.
+        """
         return f"EnergyBins({self.lower[0]} to {self.upper[-1]}, {self.nBins} bins)"
     
     def __repr__(
         self
-    ):
+    ) -> str:
+        """
+        Unambiguous, explicit string representation of an `EnergyBins` instance.
+        """
         return "\n".join([
             "EnergyBins(",
             f"  lower = {repr(self.lower)},",
@@ -35,29 +47,96 @@ class EnergyBins:
     def __eq__(
         self,
         other
-    ):
+    ) -> bool:
         """
+        Equality test between two `EnergyBin` instances, i.e. whether they describe the same energy
+        discretization. In Python,
+
+        ```
+        energyBins1 == energyBins2
+        ```
+
+        calls
+
+        ```
+        energyBins1.__eq__(energyBins2)
+        ```
+        
+        under the hood.
         """
+
+        # Comparison between an `EnergyBins` instance and any other object is not implemented.
         if not isinstance(other, self.__class__):
             raise NotImplementedError
+        
         return (
-                all(np.isclose(self.lower, other.lower, atol = 0.0, rtol= 1e-12))
-            and all(np.isclose(self.upper, other.upper, atol = 0.0, rtol= 1e-12))
+                all(np.isclose(self.lower, other.lower, atol = 0.0, rtol = 1e-12)) # Relative tolerance
+            and all(np.isclose(self.upper, other.upper, atol = 0.0, rtol = 1e-12)) # Relative tolerance
             and self.nBins == other.nBins
             and self.binWidth == other.binWidth
         )
     
+    @classmethod
     def fromRange(
-        self,
-        minEnergy: float = 0.0,
-        maxEnergy: float = 2.0,
+        cls,
+        minEnergy: float_MeV = 0.0,
+        maxEnergy: float_MeV = 2.0,
         nBins: int = 100
     ):
         """
+        Construct an `EnergyBins` instance from a minimum energy, a maximum energy, and a number of
+        energy bins. Example:
+
+        ```
+        energyBins = EnergyBins.fromRange(minEnergy = 0.0, maxEnergy = 2.0, nBins = 100)
+        ```
         """
+
         linSpace = np.linspace(start = minEnergy, stop = maxEnergy, num = nBins + 1, dtype = float)
-        self.lower = linSpace[:-1]
-        self.upper = linSpace[1:]
-        self.nBins = nBins
-        self.binWidth = (maxEnergy - minEnergy) / nBins
-        return self
+
+        return EnergyBins(
+            lower = linSpace[:-1],
+            upper = linSpace[1:],
+            nBins = nBins,
+            binWidth = (maxEnergy - minEnergy) / nBins
+        )
+    
+    @classmethod
+    def fromLower(
+        cls,
+        lower: Iterable[float_MeV]
+    ):
+        """
+        Construct an `EnergyBins` instance from the lower bounds of energy bins. Example:
+
+        ```
+        energyBins = EnergyBins.fromLower(np.linspace(0.0, 2.0, num = 100, endpoint = False))
+        ```
+        """
+
+        return EnergyBins(
+            lower = lower,
+            upper = None, # To do
+            nBins = len(lower),
+            binWidth = None # To do
+        )
+    
+    @classmethod
+    def fromUpper(
+        cls,
+        upper: Iterable[float_MeV]
+    ):
+        """
+        Construct an `EnergyBins` instance from the upper bounds of energy bins. Example:
+
+        ```
+        energyBins = EnergyBins.fromUpper(np.linspace(0.02, 2.0, num = 100))
+        ```
+        """
+
+        return EnergyBins(
+            lower = None, # To do
+            upper = upper,
+            nBins = len(upper),
+            binWidth = None # To do
+        )

@@ -38,9 +38,26 @@ class PurityMonitor:
         other
     ):
         """
+        Equality test between two `PurityMonitor` instances, i.e. whether they have the same
+        geometry and the same radioactive source. In Python,
+
+        ```
+        purityMonitor1 == purityMonitor2
+        ```
+
+        calls
+
+        ```
+        purityMonitor1.__eq__(purityMonitor2)
+        ```
+        
+        under the hood.
         """
+
+        # Comparison between a `PurityMonitor` instance and any other object is not implemented.
         if not isinstance(other, self.__class__):
             raise NotImplementedError
+        
         return (self.radioactiveSource == other.radioactiveSource) and (self.geometry == other.geometry)
         
     def draw(

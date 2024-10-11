@@ -10,6 +10,7 @@ class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
     """
     Cylindrical TPC geometry with concentric inner disk anode and outer ring anode.
     """
+
     def __init__(
         self,
         innerRadius: float_mm,
@@ -39,7 +40,24 @@ class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
         other
     ):
         """
+        Equality test between two `CylinderConcentricTwoPartAnode` instances, i.e. whether they
+        describe the same geometry. In Python,
+
+        ```
+        geometry1 == geometry2
+        ```
+
+        calls
+
+        ```
+        geometry1.__eq__(geometry2)
+        ```
+        
+        under the hood.
         """
+
+        # Comparison between a `CylinderConcentricTwoPartAnode` instance and any other object is not
+        # implemented.
         if not isinstance(other, self.__class__):
             raise NotImplementedError
         return (
@@ -95,9 +113,9 @@ class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
         
     def isInsideActiveVolume(
         self,
-        x: float,
-        y: float,
-        z: float
+        x: float_mm,
+        y: float_mm,
+        z: float_mm
     ) -> bool:
         """
         Indicate whether a given 3D point (x, y, z) lies inside the active volume.

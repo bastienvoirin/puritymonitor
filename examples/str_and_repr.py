@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from numpy import array # Needed to assert eval(repr(...)) = ...
 from puritymonitor import (
     Bi207,

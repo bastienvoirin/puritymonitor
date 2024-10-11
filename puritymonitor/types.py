@@ -1,5 +1,5 @@
 """
-Type definitions (for type hinting)
+Type definitions (for type hinting). Requires Python >= 3.12.
 """
 
 type float_K = float
@@ -12,3 +12,4 @@ type float_cm_per_µs = float
 type float_V = float
 type float_V_per_cm = float
 type float_cm2_per_µs_per_V = float
+type float_kBq = float
