@@ -3,6 +3,11 @@
 
 # Python package for noble liquid (e.g. liquid argon) purity monitors based on radioactive electron sources (e.g. Bi-207)
 
+[![](https://img.shields.io/badge/Python-3776AB?&logo=Python&logoColor=fff&style=flat)](https://github.com/bastienvoirin/puritymonitor)
+[![](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](/LICENSE)
+[![](https://tokei.rs/b1/github/bastienvoirin/puritymonitor?category=files&style=flat)](https://github.com/bastienvoirin/puritymonitor)
+[![](https://tokei.rs/b1/github/bastienvoirin/puritymonitor?style=flat)](https://github.com/bastienvoirin/puritymonitor)
+
 ![](/static/dual_pm.svg)
 
 ## Usage
@@ -86,4 +91,4 @@ deactivate
 
 ## License
 
-[MIT License](/LICENSE).
+[MIT License](/LICENSE) © [Bastien Voirin](https://github.com/bastienvoirin).
