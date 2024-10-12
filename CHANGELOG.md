@@ -10,6 +10,9 @@ Initial release.
 
 ### Added
 
+- [LICENSE](/LICENSE)
+- [README.md](/README.md)
+- [CHANGELOG.md](/CHANGELOG.md)
 - `LAr` medium.
 - `Bi207` radioactive source.
 - `InnerOuterAnodes` abstract geometry.
