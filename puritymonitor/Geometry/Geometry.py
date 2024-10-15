@@ -46,7 +46,12 @@ class Geometry:
         self
     ):
         self.description = "geometry"
-        self.energyBins = EnergyBins()
+        self.energyBins = EnergyBins(
+            lower = [],
+            upper = [],
+            nBins = np.nan,
+            binWidth = np.nan
+        )
         
     def __str__(
         self

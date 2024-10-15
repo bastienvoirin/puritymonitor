@@ -22,7 +22,6 @@ class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.driftLength = driftLength
-        self.energyBins = EnergyBins()
         
     def __repr__(
         self
@@ -153,7 +152,7 @@ class CylinderConcentricTwoPartAnode(InnerOuterAnodes):
     ):
         self.innerAnodeSpectrum = np.zeros(nBins, dtype = int)
         self.outerAnodeSpectrum = np.zeros(nBins, dtype = int)
-        self.energyBins = EnergyBins().fromRange(
+        self.energyBins = EnergyBins.fromRange(
             minEnergy = minEnergy,
             maxEnergy = maxEnergy,
             nBins = nBins
