@@ -4,10 +4,9 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "puritymonitor"
-description = "Monte Carlo simulation and experimental data integration for noble liquid purity monitors based on radioactive electron sources."
+dynamic = ["version", "description"] # They are defined in `puritymonitor/__init__.py`
 license = {file = "LICENSE"}
 readme = "README.md"
-version = "0.1.0"
 authors = [
   {name = "Bastien Voirin"}
 ]
@@ -28,6 +27,8 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
+  "flit",
+  "flit_core",
   "ruff"
 ]
 test = []

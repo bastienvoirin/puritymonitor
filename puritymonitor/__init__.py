@@ -1,3 +1,9 @@
+"""
+Monte Carlo simulation and experimental data integration for noble liquid purity monitors based on radioactive electron sources.
+"""
+
+__version__ = "0.1.0"
+
 from .EnergySpectra import (
     EnergyBins,
     EnergySpectra
