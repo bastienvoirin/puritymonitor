@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Self # For type hint only
 from collections.abc import Iterable # For type hint only
 from ..types import float_MeV # For type hint only
 
@@ -76,6 +77,17 @@ class EnergyBins:
             and self.binWidth == other.binWidth
         )
     
+    def scale(
+        self,
+        scale: float
+    ) -> Self:
+        """
+        """
+        for index, lower in enumerate(self.lower): self.lower[index] = lower * scale
+        for index, upper in enumerate(self.upper): self.upper[index] = upper * scale
+        self.binWidth *= scale
+        return self
+    
     @classmethod
     def fromRange(
         cls,
@@ -95,8 +107,8 @@ class EnergyBins:
         linSpace = np.linspace(start = minEnergy, stop = maxEnergy, num = nBins + 1, dtype = float)
 
         return EnergyBins(
-            lower = linSpace[:-1],
-            upper = linSpace[1:],
+            lower = linSpace[:-1].copy(),
+            upper = linSpace[1:].copy(),
             nBins = nBins,
             binWidth = (maxEnergy - minEnergy) / nBins
         )

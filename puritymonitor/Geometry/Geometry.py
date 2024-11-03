@@ -1,6 +1,7 @@
 import numpy as np
 from ..EnergySpectra import EnergyBins
-from ..types import float_mm, float_MeV
+from collections.abc import Iterable # For type hint only
+from ..types import float_mm, float_MeV # For type hint only
 
 ####################################################################################################
 
@@ -135,8 +136,8 @@ class Geometry:
     def resetAnodeSpectra(
         self,
         nBins: int = 100,
-        minEnergy: float_MeV = 0.0, # MeV
-        maxEnergy: float_MeV = 2.0  # MeV
+        minEnergy: float_MeV = 0.0,
+        maxEnergy: float_MeV = 2.0
     ) -> None:
         """
         This method must be implemented in derived classes.
@@ -154,12 +155,12 @@ class Geometry:
     @property
     def anodeSpectra(
         self
-    ) -> tuple:
+    ) -> tuple[Iterable[int]]:
         return self.getAnodeSpectra()
     
     def getAnodeSpectra(
         self
-    ) -> tuple:
+    ) -> tuple[Iterable[int]]:
         """
         This method must be implemented in derived classes.
         """

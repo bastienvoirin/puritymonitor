@@ -70,13 +70,14 @@ class PurityMonitor:
 
     def energySpectra(
         self,
-        nEvents: int = 1000000,     # Number of events to simulate
-        nBins: int = 100,           # Number of energy bins
-        minEnergy: float = 0.0,     # Lowest energy in arbitrary units
-        maxEnergy: float = 2.0,     # Highest energy in arbitrary units
-        energyScale: float = 1.0,   # Arbitrary units per MeV
-        energyStdDev: float = 0.0,  # Electron energy standard deviation/resolution/systematic error
-        attDistance: float = 1000.0 # Electron attenuation distance in mm
+        nEvents: int = 1000000,      # Number of events to simulate
+        nBins: int = 100,            # Number of energy bins
+        minEnergy: float = 0.0,      # Lowest energy in arbitrary units
+        maxEnergy: float = 2.0,      # Highest energy in arbitrary units
+        energyScale: float = 1.0,    # Arbitrary units per MeV
+        energyStdDev: float = 0.0,   # Electron energy standard deviation/resolution/systematic error
+        attDistance: float = 1000.0, # Electron attenuation distance in mm
+        **kwargs
     ):
         """
         """
@@ -134,14 +135,16 @@ class PurityMonitor:
                 # Increment the event count for right anode
                 self.geometry.updateAnodeSpectra(x1, y1, z1, energyElec)
         
+        self.geometry.energyBins.scale(scale = energyScale)
         return self.geometry.energyBins, self.geometry.anodeSpectra
     
     def plotAnodeSpectra(
         self,
         ax,
+        energyStdDev: float,
         **kwargs
     ):
         """
         A wrapper for `self.geometry.plotAnodeSpectra(ax = ax, **kwargs)`.
         """
-        return self.geometry.plotAnodeSpectra(ax = ax, **kwargs)
+        return self.geometry.plotAnodeSpectra(ax = ax, energyStdDev = energyStdDev, **kwargs)
