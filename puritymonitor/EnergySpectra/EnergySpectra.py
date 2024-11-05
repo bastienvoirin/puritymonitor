@@ -3,6 +3,7 @@ from . import EnergyBins
 import numpy as np
 from scipy.optimize import curve_fit
 from typing import Self # For type hint only (Python >= 3.11)
+from collections.abc import Iterable
 from ..types import float_MeV # For type hint only
 
 ####################################################################################################
@@ -45,8 +46,8 @@ class EnergySpectra:
     def __init__(
         self,
         energyBins: EnergyBins,
-        spectra: list = [],
-        labels: list[str] = []
+        spectra: Iterable = [],
+        labels: Iterable[str] = []
     ):
         self.energyBins = energyBins
         self.spectra = spectra
@@ -95,9 +96,10 @@ class EnergySpectra:
         
         return self
         
+    @staticmethod
     def load(
-        self,
-        filename: str
+        filename: str,
+        ignore: Iterable[int] = []
     ) -> Self:
         """
         Load energy spectra from a `csv` file or any other text-based file.
@@ -107,22 +109,37 @@ class EnergySpectra:
 
         with open(filename, "r") as inputFile:
             # Header (labels for the energy column and each spectrum)
-            self.labels = next(inputFile).split(",")
+            labels = [
+                label
+                for index, label in enumerate(next(inputFile).strip().split(","))
+                if index not in ignore
+            ]
             
             # Body (energies and events per energy bin for each spectrum)
-            self.energy = []
-            self.spectra = [[] for _ in self.labels[1:]]
+            energy = []
+            spectra = [
+                []
+                for index, _ in enumerate(labels[1:])
+                if index not in ignore
+            ]
             for line in inputFile:
                 # Read the current bin
-                currentEnergy, *currentSpectra = line.split(",").map(float)
+                currentEnergy, *currentSpectra = [
+                    0.0 if value == "" or value == "\n" else float(value)
+                    for index, value in enumerate(line.strip().split(","))
+                    if index not in ignore
+                ]
 
                 # Update self.energy and self.spectra accordingly
                 lowerEnergy.append(currentEnergy)
-                for savedSpectrum, readSpectrum in zip(self.spectra, currentSpectra):
+                for savedSpectrum, readSpectrum in zip(spectra, currentSpectra):
                     savedSpectrum.append(readSpectrum)
 
-        self.energyBins = EnergyBins.fromLower(lowerEnergy)
-        return self
+        return EnergySpectra(
+            energyBins = EnergyBins.fromLower(lowerEnergy),
+            spectra = spectra,
+            labels = labels
+        )
 
     @classmethod
     def fit(
