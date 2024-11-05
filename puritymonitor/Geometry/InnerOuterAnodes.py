@@ -1,5 +1,5 @@
 import numpy as np
-from ..EnergySpectra import EnergySpectra
+from ..EnergySpectra import EnergySpectra, EnergyBins
 from .Geometry import Geometry
 from collections.abc import Iterable, Callable # For type hint only
 from ..types import float_MeV # For type hint only
@@ -37,96 +37,112 @@ class InnerOuterAnodes(Geometry):
             lambda means, stdDevs: "IC peaks fit",
         legendTitle: str = "",
         legendFontSize: int | None = None,
+        energyBins: EnergyBins | None = None,
+        innerAnodeSpectrum: Iterable[int] = [],
+        outerAnodeSpectrum: Iterable[int] = [],
         **kwargs
     ):
         """
         """
 
-        energy = np.append(self.energyBins.lower, self.energyBins.upper[-1])
-        inner = np.append(self.innerAnodeSpectrum, self.innerAnodeSpectrum[-1])
-        outer = np.append(self.outerAnodeSpectrum, self.outerAnodeSpectrum[-1])
+        isExpData = True
+
+        if energyBins is None:
+            energyBins = self.energyBins
+        energy = np.append(energyBins.lower, energyBins.upper[-1])
+
+        if len(innerAnodeSpectrum) == 0 and len(outerAnodeSpectrum) == 0:
+            isExpData = False
+            innerAnodeSpectrum, outerAnodeSpectrum = self.innerAnodeSpectrum, self.outerAnodeSpectrum
+        inner = np.append(innerAnodeSpectrum, innerAnodeSpectrum[-1])
+        outer = np.append(outerAnodeSpectrum, outerAnodeSpectrum[-1])
 
         ax.set_xlabel(xAxisLabel)
-        ax.set_xlim(self.energyBins.lower[0], self.energyBins.upper[-1])
-        ax.axhline(0, color = "gray", linewidth = 0.5)
-
-        """
-        def events(nEvents):
-            pow = 0
-            while nEvents % 1000 == 0:
-                pow += 3
-                nEvents //= 1000
-            return f"{nEvents}{({0: "", 3: "k", 6: "M"}[pow])}"
-        ax.text(
-            0.0,
-            1.01,
-            r"\textbf{Simulation}" + f" ({events(kwargs["nEvents"])} events)",
-            ha = "left",
-            va = "bottom",
-            transform = ax.transAxes
-        )
-        ax.text(
-            1.0,
-            1.01,
-            f"$\\ell_{{\\mathrm{{drift}}}} = {int(round(self.driftLength))}\\mathrm{{mm}}$",
-            ha = "right",
-            va = "bottom",
-            transform = ax.transAxes
-        )
-        """
+        ax.set_xlim(energyBins.lower[0], energyBins.upper[-1])
+        ax.axhline(0, **{**{"linewidth": 0.5}, **gridParams})
 
         # Inner anode energy spectrum:
 
         axInner = ax
         axInner.set_ylabel(yAxisLabel, color = innerAnodeColor)
-        lns1 = axInner.plot(
-            energy,
-            inner,
-            color = innerAnodeColor,
-            drawstyle = "steps-post",
-            label = innerAnodeLabel
-        )
-        axInner.grid(axis = "x", **gridParams)
+        if isExpData and False:
+            lns1 = []
+            axInner.hlines(
+                innerAnodeSpectrum,
+                energyBins.lower,
+                energyBins.upper,
+                color = innerAnodeColor,
+                label = innerAnodeLabel
+            )
+        else:
+            lns1 = axInner.plot(
+                energy,
+                inner,
+                color = innerAnodeColor,
+                drawstyle = "steps-post",
+                label = innerAnodeLabel
+            )
+        axInner.grid(axis = "x", **{**{"linewidth": 0.5}, **gridParams})
         ylimInner = axInner.get_ylim()
 
         # Outer anode energy spectrum:
 
         axOuter = axInner.twinx() # Instantiate a second `Axes` object that shares the same x-axis
         axOuter.set_ylabel(yAxisLabel, color = outerAnodeColor)
-        lns2 = axOuter.plot(
-            energy,
-            outer,
-            color = outerAnodeColor,
-            drawstyle = "steps-post",
-            label = outerAnodeLabel
-        )
-        axOuter.grid(axis = "x", **gridParams)
+        if isExpData and False:
+            lns2 = []
+            axOuter.hlines(
+                outerAnodeSpectrum,
+                energyBins.lower,
+                energyBins.upper,
+                color = outerAnodeColor,
+                label = outerAnodeLabel
+            )
+        else:
+            lns2 = axOuter.plot(
+                energy,
+                outer,
+                color = outerAnodeColor,
+                drawstyle = "steps-post",
+                label = outerAnodeLabel
+            )
+        axOuter.grid(axis = "x", **{**{"linewidth": 0.5}, **gridParams})
         ylimOuter = axOuter.get_ylim()
 
         # Difference:
         
         scale = np.diff(ylimOuter) / np.diff(ylimInner)
-        lns3 = axInner.plot(
-            energy,
-            inner - outer / scale,
-            color = differenceColor,
-            drawstyle = "steps-post",
-            label = differenceLabel
-        )
+        if isExpData and False:
+            lns3 = []
+            axOuter.hlines(
+                innerAnodeSpectrum - outerAnodeSpectrum / scale,
+                energyBins.lower,
+                energyBins.upper,
+                color = differenceColor,
+                label = differenceLabel
+            )
+        else:
+            lns3 = axInner.plot(
+                energy,
+                inner - outer / scale,
+                color = differenceColor,
+                drawstyle = "steps-post",
+                label = differenceLabel
+            )
         axInner.set_ylim(ylimInner)
 
         # Gaussian fit of the ~1 MeV peaks:
 
         (_, mean1, stdDev1), (_, mean2, stdDev2), energy, gaussian = EnergySpectra.fit(
-            self.energyBins,
-            self.innerAnodeSpectrum - self.outerAnodeSpectrum / scale,
+            energyBins,
+            innerAnodeSpectrum - outerAnodeSpectrum / scale,
             nPeaks = 2,
             energyStdDev = energyStdDev
         )
         lns4 = axInner.plot(
             energy,
             gaussian,
-            label = fittedPeaksLabel((mean1, mean2), (stdDev1, stdDev1)),
+            label = fittedPeaksLabel((mean1, mean2), (stdDev1, stdDev2)),
             color = fittedPeaksColor
         )
 
