@@ -119,18 +119,21 @@ class EnergyBins:
         lower: Iterable[float_MeV]
     ):
         """
-        Construct an `EnergyBins` instance from the lower bounds of energy bins. Example:
+        Reconstruct an `EnergyBins` instance from the lower bounds of energy bins. Example:
 
         ```
         energyBins = EnergyBins.fromLower(np.linspace(0.0, 2.0, num = 100, endpoint = False))
         ```
         """
 
+        lower = np.array(lower)
+        binWidth = np.median(lower[1:] - lower[:-1])
+        upper = np.array([*lower[1:], lower[-1] + binWidth])
         return EnergyBins(
             lower = lower,
-            upper = None, # To do
+            upper = upper,
             nBins = len(lower),
-            binWidth = None # To do
+            binWidth = binWidth
         )
     
     @classmethod
@@ -139,16 +142,19 @@ class EnergyBins:
         upper: Iterable[float_MeV]
     ):
         """
-        Construct an `EnergyBins` instance from the upper bounds of energy bins. Example:
+        Reconstruct an `EnergyBins` instance from the upper bounds of energy bins. Example:
 
         ```
         energyBins = EnergyBins.fromUpper(np.linspace(0.02, 2.0, num = 100))
         ```
         """
 
+        upper = np.array(upper)
+        binWidth = np.median(upper[1:] - upper[:-1])
+        lower = np.array([upper[0] - binWidth, *upper[:-1]])
         return EnergyBins(
-            lower = None, # To do
+            lower = lower,
             upper = upper,
             nBins = len(upper),
-            binWidth = None # To do
+            binWidth = binWidth
         )
