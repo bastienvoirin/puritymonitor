@@ -1,5 +1,6 @@
 .venv
 dist
+*.txt
 *.csv
 *.svg
 __pycache__
