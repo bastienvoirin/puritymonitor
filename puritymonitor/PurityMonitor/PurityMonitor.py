@@ -68,7 +68,7 @@ class PurityMonitor:
         """
         self.geometry.draw(ax)
 
-    def energySpectra(
+    def simulateEnergySpectra(
         self,
         nEvents: int = 1000000,      # Number of events to simulate
         nBins: int = 100,            # Number of energy bins

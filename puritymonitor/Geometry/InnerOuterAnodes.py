@@ -26,10 +26,10 @@ class InnerOuterAnodes(Geometry):
         yAxisLabel: str = "Events",
         frameColor: str = "",
         gridParams = {},
-        innerAnodeColor: str = "tab:cyan",
+        innerAnodeColor: str = "tab:blue",
         outerAnodeColor: str = "tab:orange",
-        differenceColor: str = "tab:brown",
-        fittedPeaksColor: str = "tab:green",
+        differenceColor: str = "tab:green",
+        fittedPeaksColor: str = "tab:red",
         innerAnodeLabel: str = "Inner anode",
         outerAnodeLabel: str = "Outer anode",
         differenceLabel: str = "Difference",
@@ -40,6 +40,10 @@ class InnerOuterAnodes(Geometry):
         energyBins: EnergyBins | None = None,
         innerAnodeSpectrum: Iterable[int] = [],
         outerAnodeSpectrum: Iterable[int] = [],
+        nPeaks: int = 2,
+        initialGuess1: tuple[float, float, float] = (None, None, None),
+        initialGuess2: tuple[float, float, float] = (None, None, None),
+        manualScale: float = 1.0,
         **kwargs
     ):
         """
@@ -83,7 +87,7 @@ class InnerOuterAnodes(Geometry):
                 label = innerAnodeLabel
             )
         axInner.grid(axis = "x", **{**{"linewidth": 0.5}, **gridParams})
-        ylimInner = axInner.get_ylim()
+        ylimInner = np.array(axInner.get_ylim()) / manualScale
 
         # Outer anode energy spectrum:
 
@@ -136,8 +140,10 @@ class InnerOuterAnodes(Geometry):
         (_, mean1, stdDev1), (_, mean2, stdDev2), energy, gaussian = EnergySpectra.fit(
             energyBins,
             innerAnodeSpectrum - outerAnodeSpectrum / scale,
-            nPeaks = 2,
-            energyStdDev = energyStdDev
+            nPeaks = nPeaks,
+            energyStdDev = energyStdDev,
+            initialGuess1 = initialGuess1,
+            initialGuess2 = initialGuess2
         )
         lns4 = axInner.plot(
             energy,
@@ -152,7 +158,7 @@ class InnerOuterAnodes(Geometry):
         legend = axOuter.legend(
             lns,
             map(lambda ln: ln.get_label(), lns),
-            handlelength = 1,
+            handlelength = 5/6,
             borderaxespad = 0.1,
             fancybox = False,
             alignment = "left",

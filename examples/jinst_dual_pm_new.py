@@ -49,13 +49,13 @@ if __name__ == "__main__":
     ##############################
     # Run Monte Carlo simulations:
 
-    shortScale = 0.82*1.0295
-    longScale = 0.75*1.0295
+    shortScale = 1.0
+    longScale = 1.0
 
     print("0/2")
-    shortPM.simulateEnergySpectra(**params, energyStdDev = 0.044, energyScale = shortScale, minEnergy = 0.2/shortScale, maxEnergy = 1.2/shortScale)
+    shortPM.simulateEnergySpectra(**params, energyStdDev = 0.067, energyScale = shortScale, minEnergy = 0.312/shortScale, maxEnergy = 1.4/shortScale)
     print("1/2")
-    longPM.simulateEnergySpectra(**params, energyStdDev = 0.038, energyScale = longScale, minEnergy = 0.2/longScale, maxEnergy = 1.2/longScale)
+    longPM.simulateEnergySpectra(**params, energyStdDev = 0.067, energyScale = longScale, minEnergy = 0.312/longScale, maxEnergy = 1.4/longScale)
     print("2/2")
 
     ####################################
@@ -70,25 +70,26 @@ if __name__ == "__main__":
     ##############################################################
     # Plot spectra and Gaussian fits from Monte Carlo simulations:
 
-    shortPM.plotAnodeSpectra(axShortSim, energyStdDev = 0.044, **params, manualScale = 0.96, legendTitle = "Short purity monitor\nSimulation") # "\\textbf{Short purity monitor}\n\\textbf{Simulation}")
-    longPM.plotAnodeSpectra(axLongSim, energyStdDev = 0.038, **params, manualScale = 0.96, legendTitle = "Long purity monitor\nSimulation") # "\\textbf{Long purity monitor}\n\\textbf{Simulation}")
+    shortPM.plotAnodeSpectra(axShortSim, energyStdDev = 0.067, manualScale = 0.94, **params, legendTitle = "Short purity monitor\nSimulation") # "\\textbf{Short purity monitor}\n\\textbf{Simulation}")
+    longPM.plotAnodeSpectra(axLongSim, energyStdDev = 0.067, manualScale = 1.03, **params, legendTitle = "Long purity monitor\nSimulation") # "\\textbf{Long purity monitor}\n\\textbf{Simulation}")
     
     ##################################################
     # Plot spectra and Gaussian fits from experiments:
 
     for pm, axExp, energyStdDev, filename, manualScale, legendTitle in (
-        (shortPM, axShortExp, 0.044, "./data/inner_outer_short.csv", 0.7, "Short"),
-        (longPM, axLongExp, 0.038, "./data/inner_outer_long.csv", 0.6, "Long")
+        (shortPM, axShortExp, 0.05, "./data/inner_outer_short_new.csv", 0.9, "Short"),
+        #(longPM, axLongExp, 0.05, "./data/inner_outer_long_new.csv", 1.0, "Long")
     ):
         data = EnergySpectra.load(filename = filename)
         pm.plotAnodeSpectra(
             axExp,
+            energyScale = 0.5,
             energyStdDev = energyStdDev,
             **params,
             energyBins = data.energyBins,
             innerAnodeSpectrum = data.spectra[0],
             outerAnodeSpectrum = data.spectra[1],
-            nPeaks = 1,
+            nPeaks = 2,
             manualScale = manualScale,
             legendTitle = f"{legendTitle} purity monitor\nExperiment" # "\\textbf{??? purity monitor}\n\\textbf{Experiment}")
         )
@@ -96,6 +97,6 @@ if __name__ == "__main__":
     ##############################
     # Show and save the figure(s):
 
-    plt.savefig("./static/jinst_dual_pm_sim_exp_10M.svg")
-    plt.savefig("./static/jinst_dual_pm_sim_exp_10M.png", dpi = 300)
+    plt.savefig("./static/jinst_dual_pm_sim_exp_10M_new.svg")
+    plt.savefig("./static/jinst_dual_pm_sim_exp_10M_new.png", dpi = 300)
     plt.show()
